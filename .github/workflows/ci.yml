@@ -22,10 +22,10 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cd server
+        cd backend
         npm install
 
     - name: Run tests
       run: |
-        cd server
+        cd backend
         npm test -- --verbose
