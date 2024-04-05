@@ -1,2 +1,5 @@
 #depedencies
 /node_modules
+
+#config
+db_config.js
