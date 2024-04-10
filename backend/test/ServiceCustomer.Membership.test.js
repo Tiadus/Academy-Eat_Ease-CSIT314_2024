@@ -53,7 +53,7 @@ describe('ServiceCustomer', () => {
                 membershipEnd: '2024-04-05'
             }
 
-            const testExtendedDate = new Date(date);
+            const testExtendedDate = new Date();
             testExtendedDate.setMonth(testExtendedDate.getMonth()+1);
 
             const membership = new Membership(membershipInformation)
@@ -92,7 +92,7 @@ describe('ServiceCustomer', () => {
                 membershipEnd: '2024-04-05'
             }
 
-            const testExtendedDate = new Date(date);
+            const testExtendedDate = new Date();
             testExtendedDate.setMonth(testExtendedDate.getMonth()+1);
 
             const membership = new Membership(membershipInformation)

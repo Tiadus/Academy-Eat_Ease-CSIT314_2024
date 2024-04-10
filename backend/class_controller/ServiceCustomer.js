@@ -386,9 +386,7 @@ class ServiceCustomer {
                 orderItems: cartItems
             }
 
-            console.log(orderPreview);
-
-            return orderCode;
+            return orderPreview;
         } catch (error) {
             throw error;
         }
