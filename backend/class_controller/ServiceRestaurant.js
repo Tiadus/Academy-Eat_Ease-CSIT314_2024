@@ -8,9 +8,9 @@ class ServiceRestaurant {
         this.aRestaurant = null;
     }
 
-    async registerRestaurant(restaurantEmail, restaurantPassword, restaurantName, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, categories) {
+    async registerRestaurant(restaurantEmail, restaurantPassword, restaurantName, restaurantDescription, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, categories) {
         try {
-            const restaurantCode = await Restaurant.insertRestaurant(restaurantEmail, restaurantPassword, restaurantName, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, categories);
+            const restaurantCode = await Restaurant.insertRestaurant(restaurantEmail, restaurantPassword, restaurantName, restaurantDescription, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, categories);
             return restaurantCode;
         } catch (error) {
             throw error;
@@ -39,6 +39,7 @@ class ServiceRestaurant {
             restaurantCode: this.aRestaurant.restaurantCode,
             restaurantEmail: this.aRestaurant.restaurantEmail,
             restaurantName: this.aRestaurant.restaurantName,
+            restaurantDescription: this.aRestaurant.restaurantDescription,
             restaurantPhone: this.aRestaurant.restaurantPhone,
             restaurantABN: this.aRestaurant.restaurantABN,
             restaurantBanking: this.aRestaurant.restaurantBanking,
@@ -64,6 +65,7 @@ class ServiceRestaurant {
         return {
             restaurantCode: this.aRestaurant.restaurantCode,
             restaurantName: this.aRestaurant.restaurantName,
+            restaurantDescription: this.aRestaurant.restaurantDescription,
             restaurantPhone: this.aRestaurant.restaurantLocation,
             restaurantLocation: this.aRestaurant.restaurantLocation,
             restaurantLat: this.aRestaurant.restaurantLat,
@@ -73,7 +75,7 @@ class ServiceRestaurant {
         }
     }
 
-    async setRestaurantInformation(email, phone, password, name, address, lat, lon, abn, banking) {
+    async setRestaurantInformation(email, phone, password, name, description, address, lat, lon, abn, banking) {
         try {
             let affectedRows = 0;
 
@@ -85,6 +87,8 @@ class ServiceRestaurant {
                 affectedRows = await this.aRestaurant.setRestaurantPassword(password);
             } else if (name !== null) {
                 affectedRows = await this.aRestaurant.setRestaurantName(name);
+            } else if (description !== null) {
+                affectedRows = await this.aRestaurant.setRestaurantDescription(description);
             } else if (address !== null && lat !== null && lon !== null) {
                 affectedRows = await this.aRestaurant.setRestaurantAddress(address, lat, lon);
             } else if (abn !== null) {

@@ -3,6 +3,7 @@ class Restaurant {
         this.restaurantCode = restaurantInformation.restaurantCode;
         this.restaurantEmail = restaurantInformation.restaurantEmail;
         this.restaurantName = restaurantInformation.restaurantName;
+        this.restaurantDescription = restaurantInformation.restaurantDescription;
         this.restaurantPhone = restaurantInformation.restaurantPhone;
         this.restaurantABN = restaurantInformation.restaurantABN;
         this.restaurantBanking = restaurantInformation.restaurantBanking;
@@ -15,7 +16,7 @@ class Restaurant {
         this.isActive = restaurantInformation.isActive;
     }
 
-    static async insertRestaurant(restaurantEmail, restaurantPassword, restaurantName, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, categories) {
+    static async insertRestaurant(restaurantEmail, restaurantPassword, restaurantName, restaurantDescription, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, categories) {
         const {pool} = require('../Database.js');
         let connection = null;
         try {
@@ -23,11 +24,11 @@ class Restaurant {
             await connection.beginTransaction();
 
             const sql1 = 'INSERT INTO RESTAURANT'
-            const sql2 = '(restaurantEmail, restaurantName, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, restaurantTotalRating, restaurantTotalOrder, restaurantIMG, isActive)';
+            const sql2 = '(restaurantEmail, restaurantName, restaurantDescription, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, restaurantTotalRating, restaurantTotalOrder, restaurantIMG, isActive)';
             const sql3 = 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             const restaurantRegisterSQL = `${sql1} ${sql2} ${sql3}`;
             const restaurantRegisterSQLValue = [
-                restaurantEmail, restaurantName, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, 0, 0, "defaultRestaurant.png", true
+                restaurantEmail, restaurantName, restaurantDescription, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, 0, 0, "defaultRestaurant.png", true
             ];
 
             const restaurantRegisterResult = await connection.query(restaurantRegisterSQL, restaurantRegisterSQLValue);
@@ -73,7 +74,7 @@ class Restaurant {
     static async getDBRestaurant(inputEmail, inputPassword) {
         const {pool} = require('../Database.js');
         try {
-            const sql1 = 'SELECT RESTAURANT.restaurantCode, RESTAURANT.restaurantEmail, RESTAURANT.restaurantName, RESTAURANT.restaurantPhone,';
+            const sql1 = 'SELECT RESTAURANT.restaurantCode, RESTAURANT.restaurantEmail, RESTAURANT.restaurantName, RESTAURANT.restaurantDescription, RESTAURANT.restaurantPhone,';
             const sql2 = 'RESTAURANT.restaurantABN, RESTAURANT.restaurantBanking, RESTAURANT.restaurantLocation, RESTAURANT.restaurantLat,'
             const sql3 = 'RESTAURANT.restaurantLon, RESTAURANT.restaurantTotalRating, RESTAURANT.restaurantTotalOrder, RESTAURANT.restaurantIMG, RESTAURANT.isActive';
             const sql4 = 'FROM RESTAURANT';
@@ -188,6 +189,25 @@ class Restaurant {
         }
     }
 
+    async setRestaurantDescription(restaurantDescription) {
+        const {pool} = require('../Database.js');
+        try {
+            const sql = 'UPDATE RESTAURANT SET restaurantDescription = ? WHERE restaurantCode = ?';
+            const sqlValue = [restaurantDescription, this.restaurantCode];
+
+            const updateResult = await pool.query(sql, sqlValue);
+
+            const affectedRows = updateResult[0].affectedRows;
+            return affectedRows;
+        } catch (dbError) {
+            console.log("Error While Setting Restaurant Email!");
+            console.log(dbError);
+            const error = new Error("Internal Server Error");
+            error.status = 500;
+            throw error;
+        }
+    }
+
     async setRestaurantAddress(restaurantAddress, restaurantLat, restaurantLon) {
         const {pool} = require('../Database.js');
         try {
@@ -245,11 +265,11 @@ class Restaurant {
         }
     }
 
-    async addItem(itemName, itemPrice) {
+    async addItem(itemName, itemPrice, itemDescription) {
         const {pool} = require('../Database.js');
         try {
-            const sql = 'INSERT INTO RESTAURANT_ITEM VALUES(?, ?, ?, ?)';
-            const sqlValue = [this.restaurantCode, itemName, itemPrice, "defaultItem.png"];
+            const sql = 'INSERT INTO RESTAURANT_ITEM VALUES(?, ?, ?, ?, ?)';
+            const sqlValue = [this.restaurantCode, itemName, itemPrice, itemDescription, "defaultItem.png"];
 
             await pool.query(sql, sqlValue);
 
@@ -294,11 +314,11 @@ class Restaurant {
         }
     }
 
-    async editItem(newItemName, itemPrice, oldItemName) {
+    async editItem(newItemName, itemDescription, itemPrice, oldItemName) {
         const {pool} = require('../Database.js');
         try {
-            const sql = 'UPDATE RESTAURANT_ITEM SET itemName = ?, itemPrice = ? WHERE restaurantCode = ? AND itemName = ?';
-            const sqlValue = [newItemName, itemPrice, this.restaurantCode, oldItemName];
+            const sql = 'UPDATE RESTAURANT_ITEM SET itemName = ?, itemDescription = ?, itemPrice = ? WHERE restaurantCode = ? AND itemName = ?';
+            const sqlValue = [newItemName, itemDescription, itemPrice, this.restaurantCode, oldItemName,];
             const updateResult = await pool.query(sql, sqlValue);
             const affectedRows = updateResult[0].affectedRows;
 
@@ -338,7 +358,7 @@ class Restaurant {
     static async getRestaurantByKeyword(keyword, ratingLowerBound) {
         const {pool} = require('../Database.js');
         try {
-            let sql1 = 'SELECT restaurantCode, restaurantName, restaurantLocation, restaurantLat, restaurantLon, NULLIF(ROUND((restaurantTotalRating / NULLIF(restaurantTotalOrder, 0)), 2), 0) AS rating '
+            let sql1 = 'SELECT restaurantCode, restaurantName, restaurantDescription, restaurantLocation, restaurantLat, restaurantLon, NULLIF(ROUND((restaurantTotalRating / NULLIF(restaurantTotalOrder, 0)), 2), 0) AS rating '
             let sql2 = 'FROM RESTAURANT WHERE isActive = true AND restaurantName LIKE ?';
             let sql = sql1 + sql2;
             let sqlValue = [`%${keyword}%`];
@@ -363,7 +383,7 @@ class Restaurant {
     static async getRestaurantByCategory(category, ratingLowerBound) {
         const {pool} = require('../Database.js');
         try {
-            let sql1 = 'SELECT RESTAURANT.restaurantCode, RESTAURANT.restaurantName, RESTAURANT.restaurantLocation, RESTAURANT.restaurantLat, RESTAURANT.restaurantLon, NULLIF(ROUND((restaurantTotalRating / NULLIF(restaurantTotalOrder, 0)), 2), 0) AS rating ';
+            let sql1 = 'SELECT RESTAURANT.restaurantCode, RESTAURANT.restaurantName, RESTAURANT.restaurantDescription, RESTAURANT.restaurantLocation, RESTAURANT.restaurantLat, RESTAURANT.restaurantLon, NULLIF(ROUND((restaurantTotalRating / NULLIF(restaurantTotalOrder, 0)), 2), 0) AS rating ';
             let sql2 = 'FROM CATEGORY ';
             let sql3 = 'JOIN CATEGORY_RESTAURANT ON CATEGORY.categoryCode = CATEGORY_RESTAURANT.categoryCode '
             let sql4 = 'JOIN RESTAURANT ON CATEGORY_RESTAURANT.restaurantCode = RESTAURANT.restaurantCode '

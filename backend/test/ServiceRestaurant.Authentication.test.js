@@ -4,6 +4,7 @@ jest.mock('../class_model/Restaurant.js', () => {
             this.restaurantCode = restaurantInformation.restaurantCode;
             this.restaurantEmail = restaurantInformation.restaurantEmail;
             this.restaurantName = restaurantInformation.restaurantName;
+            this.restaurantDescription = restaurantInformation.restaurantDescription;
             this.restaurantPhone = restaurantInformation.restaurantPhone;
             this.restaurantABN = restaurantInformation.restaurantABN;
             this.restaurantBanking = restaurantInformation.restaurantBanking;
@@ -22,6 +23,7 @@ jest.mock('../class_model/Restaurant.js', () => {
                 restaurantCode: 0,
                 restaurantEmail: inputEmail,
                 restaurantName: 'Test Restaurant Name',
+                restaurantDescription: 'Test Restaurant Description',
                 restaurantPhone: 'Test Restaurant Phone',
                 restaurantABN: 'Test Restaurant ABN',
                 restaurantBanking: 'Test Restaurant Banking',
@@ -49,6 +51,7 @@ describe('ServiceRestaurant Authentication', () => {
             expect(serviceRestaurant.aRestaurant.restaurantCode).toBe(0);
             expect(serviceRestaurant.aRestaurant.restaurantEmail).toBe('rem4life@gmail.com');
             expect(serviceRestaurant.aRestaurant.restaurantName).toBe('Test Restaurant Name');
+            expect(serviceRestaurant.aRestaurant.restaurantDescription).toBe('Test Restaurant Description');
             expect(serviceRestaurant.aRestaurant.restaurantPhone).toBe('Test Restaurant Phone');
             expect(serviceRestaurant.aRestaurant.restaurantABN).toBe('Test Restaurant ABN');
             expect(serviceRestaurant.aRestaurant.restaurantBanking).toBe('Test Restaurant Banking');
