@@ -52,6 +52,7 @@ function generateRestaurants(geoPoints, restaurantQuantity) {
     for (let i = 0; i < restaurantQuantity; i++) {
         const restaurantEmail = "restaurant" + (i + 1).toString() + "@mail.com"
         const restaurantName = "Restaurant " + (i + 1).toString();
+        const restaurantDescription = `Restaurant ${i + 1} Very Good, Very Nice!`
         const restaurantPhone = "01234567890";
         const restaurantABN = 12345678901;
         const restaurantBanking = 12345678901;
@@ -66,6 +67,7 @@ function generateRestaurants(geoPoints, restaurantQuantity) {
         const aRestaurant = {
             restaurantEmail: restaurantEmail,
             restaurantName: restaurantName,
+            restaurantDescription: restaurantDescription,
             restaurantPhone: restaurantPhone,
             restaurantABN: restaurantABN,
             restaurantBanking: restaurantBanking,
@@ -107,12 +109,14 @@ function generateRestaurantItems(restaurants) {
         for (let j = 0; j < 5; j++) {
             const restaurantCode = i + 1;
             const itemName = restaurants[i].restaurantName + " Item " + (j + 1);
+            const itemDescription = `${restaurants[i].restaurantName} Item ${j + 1} Description`
             const itemPrice = getRandomInt(10, 30);
             const itemIMG = "defaultItem.png";
     
             const aRestaurantItem = {
                 restaurantCode: restaurantCode,
                 itemName: itemName,
+                itemDescription: itemDescription,
                 itemPrice: itemPrice,
                 itemIMG: itemIMG,
             }

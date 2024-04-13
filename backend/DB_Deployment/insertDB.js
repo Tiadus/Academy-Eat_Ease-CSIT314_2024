@@ -5,7 +5,7 @@ async function batchInsertRestaurant(dbConnection, restaurants, restaurantAuthen
 
         // Prepare the insert query
         const queryRestaurant = 
-        'INSERT INTO RESTAURANT (restaurantEmail, restaurantName, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, restaurantTotalRating, restaurantTotalOrder, restaurantIMG, isActive) VALUES ?';
+        'INSERT INTO RESTAURANT (restaurantEmail, restaurantName, restaurantDescription, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, restaurantTotalRating, restaurantTotalOrder, restaurantIMG, isActive) VALUES ?';
 
         // Format the data for batch insert
         const valueRestaurant = 
@@ -13,6 +13,7 @@ async function batchInsertRestaurant(dbConnection, restaurants, restaurantAuthen
             [
                 item.restaurantEmail,
                 item.restaurantName,
+                item.restaurantDescription,
                 item.restaurantPhone,
                 item.restaurantABN,
                 item.restaurantBanking,
@@ -43,13 +44,14 @@ async function batchInsertRestaurant(dbConnection, restaurants, restaurantAuthen
 
         // Prepare the insert query
         const queryRestaurantItem = 
-        'INSERT INTO RESTAURANT_ITEM (restaurantCode, itemName, itemPrice, itemIMG) VALUES ?';
+        'INSERT INTO RESTAURANT_ITEM (restaurantCode, itemName, itemDescription, itemPrice, itemIMG) VALUES ?';
 
         const valueRestaurantItem = 
         restaurantItems.map(item => 
             [
                 item.restaurantCode,
                 item.itemName,
+                item.itemDescription,
                 item.itemPrice,
                 item.itemIMG
             ]);

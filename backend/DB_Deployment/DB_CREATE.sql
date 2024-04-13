@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS RESTAURANT (
 	restaurantCode int auto_increment not null,
     restaurantEmail varchar(225) not null,
     restaurantName varchar(255) not null,
+    restaurantDescription varchar(255) not null,
     restaurantPhone varchar(255) not null,
     restaurantABN varchar(255) not null,
     restaurantBanking varchar(255) not null,
@@ -58,6 +59,7 @@ CREATE TABLE IF NOT EXISTS RESTAURANT_AUTHENTICATION (
 CREATE TABLE IF NOT EXISTS RESTAURANT_ITEM (
 	restaurantCode int not null,
     itemName varchar(225) not null,
+    itemDescription varchar(255) not null,
     itemPrice decimal(10,2) not null,
     itemIMG varchar(225) not null,
     constraint RESTAURANT_ITEM_PK primary key (restaurantCode, itemName),
