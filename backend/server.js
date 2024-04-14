@@ -629,6 +629,30 @@ app.post('/api/customer/order/create', async (req, res) => {
     }
 });
 
+app.get('/api/customer/orders/active', async (req, res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const customerEmail = authenParts[0];
+    const customerPassword = authenParts[1];
+
+    try {
+        const serviceCustomer = new ServiceCustomer();
+        await serviceCustomer.authenticateCustomer(customerEmail, customerPassword);
+        const orderCode = await serviceCustomer.getCustomerOrders(0);
+
+        res.json(orderCode);
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
 server.listen(4000, function() {
     console.log("Listening on port 4000");
 });
