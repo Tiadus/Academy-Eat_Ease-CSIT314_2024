@@ -408,6 +408,16 @@ app.get('/api/restaurants', async (req,res) => {
     }
 });
 
+app.get('/api/categories', async (req,res) => {
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        const categories = await serviceRestaurant.getRestaurantCategories();;
+        res.json(categories);
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
 server.listen(4000, function() {
     console.log("Listening on port 4000");
 });
