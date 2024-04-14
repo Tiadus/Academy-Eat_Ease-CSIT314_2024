@@ -418,6 +418,59 @@ app.get('/api/categories', async (req,res) => {
     }
 });
 
+app.get('/api/restaurants/?:category', async (req,res) => {
+    const category = req.params.category;
+
+    if (category === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    let ratingLowerBound = req.query.rlb;
+    let radius = req.query.r;
+    let cusLat = req.query.lat;
+    let cusLon = req.query.lon;
+
+    if (ratingLowerBound !== undefined) {
+        if (isNaN(ratingLowerBound) === false) {
+            ratingLowerBound = parseInt(ratingLowerBound);
+        } else {
+            return res.send("Wrong Parameter");
+        }
+    }
+
+    if (radius !== undefined) {
+        if (cusLat === undefined || cusLon === undefined) {
+            return res.send("Wrong Parameter");
+        }
+
+        if (isNaN(radius) === false) {
+            radius = parseInt(radius);
+        } else {
+            return res.send("Wrong Parameter");
+        }
+
+        if (isNaN(cusLat) === false) {
+            cusLat = parseFloat(cusLat);
+        } else {
+            return res.send("Wrong Parameter");
+        }
+
+        if (isNaN(cusLon) === false) {
+            cusLon = parseFloat(cusLon);
+        } else {
+            return res.send("Wrong Parameter");
+        }
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        const restaurants = await serviceRestaurant.getRestaurants(null, category, ratingLowerBound, radius, cusLat, cusLon);
+        res.json(restaurants);
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
 server.listen(4000, function() {
     console.log("Listening on port 4000");
 });
