@@ -471,6 +471,22 @@ app.get('/api/restaurants/?:category', async (req,res) => {
     }
 });
 
+app.get('/api/restaurant/?:restaurantName', async (req, res) => {
+    const restaurantName = req.params.restaurantName;
+
+    if (restaurantName === undefined) {
+        res.send("Server Unavailable");
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        const restaurantMenu = await serviceRestaurant.getRestaurantMenu(restaurantName);
+        res.json(restaurantMenu);
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
 server.listen(4000, function() {
     console.log("Listening on port 4000");
 });
