@@ -599,6 +599,36 @@ app.post('/api/customer/cart/delete', async (req,res) => {
     }
 });
 
+app.post('/api/customer/order/create', async (req, res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const customerEmail = authenParts[0];
+    const customerPassword = authenParts[1];
+
+    const body = req.body;
+    const recipientName = body.recipientName;
+    const recipientPhone = body.recipientPhone;
+    const orderLocation = body.orderLocation;
+    const orderCost = body.orderCost;
+
+    try {
+        const serviceCustomer = new ServiceCustomer();
+        await serviceCustomer.authenticateCustomer(customerEmail, customerPassword);
+        const createdOrder = await serviceCustomer.placeCustomerOrder(recipientName, recipientPhone, orderLocation, orderCost);
+
+        res.json(createdOrder.orderCode);
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
 server.listen(4000, function() {
     console.log("Listening on port 4000");
 });
