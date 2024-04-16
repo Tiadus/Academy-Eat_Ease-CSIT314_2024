@@ -28,7 +28,7 @@ function CheckIcon() {
     );
 }
 
-export function PricingCard({ price, type, memberType, membershipEnd , setEndDate, setMembershipType}) {
+export function PricingCard({ price, type, memberType, membershipEnd, setMembershipType, getCustomerInfo}) {
     let bg_color;
     switch (type) {
         case 0:
@@ -58,12 +58,14 @@ export function PricingCard({ price, type, memberType, membershipEnd , setEndDat
                 }
             })
             console.log(response)
-            const newUser = user; 
-            newUser.membershipEndDate = response.data.membershipEnd; 
-            setUser(newUser);
+            // const newUser = user; 
+            // newUser.membershipEndDate = response.data.membershipEnd; 
+            // setUser(newUser);
             // setEndDate(response.data.membershipEnd)
             // alert("Subcribe sucessfully")
+            getCustomerInfo();
         }catch(e){
+            console.log(e)
             alert('Cancel current subscription first')
             throw new Error(e)
         }
@@ -81,8 +83,8 @@ export function PricingCard({ price, type, memberType, membershipEnd , setEndDat
                 }
             })
             console.log(response)
-            setEndDate(response.data)
             // alert("Renew sucessfully")
+            getCustomerInfo();
         }catch(e){
             throw new Error(e)
         }
@@ -97,7 +99,8 @@ export function PricingCard({ price, type, memberType, membershipEnd , setEndDat
                     Authorization: isAuthenticated
                 }
             })
-            console.log(response)
+            console.log(response);
+            getCustomerInfo();
             // alert("Cancel sucessfully")
         }catch(e){
             throw new Error(e)

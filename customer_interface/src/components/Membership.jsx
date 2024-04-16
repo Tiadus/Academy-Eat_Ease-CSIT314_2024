@@ -5,10 +5,7 @@ import { useAuth } from '../Context'
 import axios from 'axios'
 const Membership = () => {
     const {user, isAuthenticated, setUser} = useAuth()
-    console.log(user)
-    const [endDate, setEndDate] = useState(user.membershipEnd)
-    const [membershipType, setMembershipType] = useState(user.membershipType)
-    
+
     const getCustomerInfo = async () => {
         try {
           const response = await axios.get('http://localhost:4000/api/customer/information', {
@@ -23,22 +20,21 @@ const Membership = () => {
           throw new Error(e)
         }
       }
-
     return (
         <div className=''>
             {/* Banner */}
             <img className='h-[200px] w-full' src={banner} alt="" />
             <div className='flex gap-20 m-20  items-center justify-center'>
                 <PricingCard price ='29' type = {0} 
-                memberType= {user.memberType} 
+                memberType= {user.membershipType} 
                 membershipEnd = {user.membershipEnd}
-                setEndDate= {setEndDate}
-                setMembershipType={setMembershipType}/>
+                getCustomerInfo = {getCustomerInfo}
+                />
                 <PricingCard price = '149' type = {1}
-                memberType= {membershipType}
-                membershipEnd ={endDate}
-                setEndDate= {setEndDate}
-                setMembershipType={setMembershipType}/>
+                memberType= {user.membershipType}
+                membershipEnd ={user.membershipEnd}
+                getCustomerInfo = {getCustomerInfo}
+                />
 
             </div>
 
