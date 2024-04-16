@@ -56,15 +56,13 @@ const Home = () => {
     try {
       const response = await axios.get('http://localhost:4000/api/restaurants/' + selectedCat, {
         params: {
-          rlb: rlb,
-          r: r,
-          lat: lat,
-          lon: lon
+          // rlb: rlb,
+          // r: r,
+          // lat: lat,
+          // lon: lon
         }
       })
-
       console.log(response.data)
-      // response.data? setRestaurants(response.data):  alert("NO restataurants MATCHED")
       response.data.length > 0 ? setRestaurants(response.data)
         : alert("No restataurants MATCHED")
 

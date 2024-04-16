@@ -38,12 +38,14 @@ export function PricingCard({ price, type, memberType, membershipEnd , setEndDat
         case 1:
             bg_color = "yellow"
             break;
+        case null:
+            break; 
         
         
         
     }
 
-    const {isAuthenticated} = useAuth(); 
+    const {user,setUser, isAuthenticated} = useAuth(); 
     //Handle subcribe 
     const handleSubscribe = async (type)=>{
         try{
@@ -56,14 +58,16 @@ export function PricingCard({ price, type, memberType, membershipEnd , setEndDat
                 }
             })
             console.log(response)
-            // setEndDate(response.data.membershipEnd)
+            // const newUser = user; 
+            // newUser.membershipEndDate = response.data.membershipEnd; 
+            // setUser(newUser);
+            setEndDate(response.data.membershipEnd)
             // alert("Subcribe sucessfully")
         }catch(e){
+            alert('Cancel current subscription first')
             throw new Error(e)
         }
     }
-
-
 
     //Handle Renew
 
@@ -108,13 +112,7 @@ export function PricingCard({ price, type, memberType, membershipEnd , setEndDat
                 color="transparent"
                 className="m-0 mb-8 rounded-none border-b border-white/10 pb-8 text-center"
             >
-                <Typography
-                    variant="small"
-                    color="white"
-                    className="font-normal uppercase"
-                >
-                    {type}
-                </Typography>
+                
                 <Typography
                     variant="h1"
                     color="white"
@@ -194,6 +192,7 @@ export function PricingCard({ price, type, memberType, membershipEnd , setEndDat
                 </Button>
                 </>
                     :
+                    
                     <Button
                     size="lg"
                     color="white"

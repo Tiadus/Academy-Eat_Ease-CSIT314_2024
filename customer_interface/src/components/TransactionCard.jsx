@@ -16,8 +16,8 @@ const TransactionCard = ({ restaurantCode,
     return (
         <div className='grid grid-cols-10 g-5 w-full border-black border-t p-10 mb-5 items-center'>
             <div className='col-span-4 text-center '>{orderCode}</div>
-            <div className='col-span-2 text-center '>{orderStatus === 1 ? 'Active' : 'Not active'}</div>
-            <div className='col-span-2 text-center'>- {orderCost} $ </div>
+            <div className= 'col-span-2 text-center'>{orderStatus === 3 ? 'Completed' : 'Rejected'}</div>
+            <div className='col-span-2 text-center'>{orderStatus===3? '-':'+'}{orderCost} $ </div>
             <div className='col-span-2 text-center ml-[60px]'>
                 <OrderDetailCard  orderCode={orderCode} />
             </div>

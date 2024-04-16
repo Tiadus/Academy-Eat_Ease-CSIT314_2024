@@ -49,11 +49,11 @@ export function OrderDetailCard({ orderCode }) {
                     <CardBody className="flex flex-col gap-4 max-h-[800px] overflow-auto">
                         <p className="text-3xl">Order Details</p>
                         {Object.keys(orderDetail).length > 0 && (<>
-                            <p>{orderDetail.orderInformation.recipientName}</p>
-                            <p>{orderDetail.orderInformation.recipientPhone}</p>
-                            <p>{orderDetail.orderInformation.orderLocation}</p>
-                            <p>{orderDetail.orderInformation.orderDate}</p>
-                            <p>{orderDetail.orderInformation.orderCost} $</p>
+                            <p>Customer: {orderDetail.orderInformation.recipientName}</p>
+                            <p>Phone: {orderDetail.orderInformation.recipientPhone}</p>
+                            <p>Location: {orderDetail.orderInformation.orderLocation}</p>
+                            <p>Order date: {orderDetail.orderInformation.orderDate}</p>
+                            <p>Total cost: {orderDetail.orderInformation.orderCost} $</p>
                         </>)}
                         <p className="text-3xl">List of Items </p>
                         {Object.keys(orderDetail).length > 0 &&

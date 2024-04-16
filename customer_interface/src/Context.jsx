@@ -24,9 +24,8 @@ export const ContextProvider = ({ children }) => {
         setUser(userData);
     };
 
-    //   const logout = () => {
-    //     setIsAuthenticated(false);
-    //     setUser(null);
+    //   const updateSub = (member) => {
+    //     setUser(...);
     //   };
 
     return (

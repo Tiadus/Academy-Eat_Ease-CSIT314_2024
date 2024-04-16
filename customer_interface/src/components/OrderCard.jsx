@@ -19,7 +19,7 @@ const OrderCard = ({ restaurantCode,
                 <div className='col-start-2 col-span-2'>
                     <p>Restaurant Code: {restaurantCode}</p>
                     <p className='text-2xl font-semibold'>Order Code: {orderCode}</p>
-                    <p >Status: {orderStatus === 1 ? 'active' : 'not active'}</p>
+                    <p >Status: {orderStatus === 1 ? 'Pending' : 'In Delivery'}</p>
                     <p>Total: {orderCost} $</p>
 
                 <OrderDetailCard orderCode={orderCode}/>

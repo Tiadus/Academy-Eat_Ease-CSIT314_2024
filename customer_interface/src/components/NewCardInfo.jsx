@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import { useAuth } from "../Context";
 
-export default function NewCardInfo() {
+export default function NewCardInfo({fetchCards}) {
     const [open, setOpen] = useState(false);
     const [cardNumber, setCardNumber] = useState('');
     const [cardOwner, setCardOwner] = useState('');
@@ -35,8 +35,8 @@ export default function NewCardInfo() {
                     Authorization: isAuthenticated
                 }
             })
-
             alert('New Card added successfully')
+            await fetchCards();
         } catch (e) {
             throw new Error(e);
         }

@@ -38,6 +38,7 @@ const Payment = () => {
                     Authorization: isAuthenticated
                 }
             })
+            fetchCards(); 
         }catch(e){
             throw new Error(e)
         }
@@ -83,7 +84,7 @@ const Payment = () => {
                     Add a new card
                 </Typography>
                 <ul className="mt-4 -ml-2.5 flex flex-col gap-1">
-                    <NewCardInfo/>
+                    <NewCardInfo fetchCards={fetchCards}/>
                 </ul>
             </div>
         </DialogBody>
