@@ -5,9 +5,6 @@ import { useAuth } from '../Context'
 import axios from 'axios'
 const Membership = () => {
     const {user, isAuthenticated, setUser} = useAuth()
-    console.log(user)
-    const [endDate, setEndDate] = useState(user.membershipEnd)
-    const [membershipType, setMembershipType] = useState(user.membershipType)
 
     const getCustomerInfo = async () => {
         try {
@@ -24,23 +21,19 @@ const Membership = () => {
         }
       }
     
-      useEffect(()=>{
-        getCustomerInfo()
-      }
-      ,[endDate|| membershipType])
-    
     return (
         <div className=''>
             {/* Banner */}
             <img className='h-[200px] w-full' src={banner} alt="" />
             <div className='flex gap-20 m-20  items-center justify-center'>
                 <PricingCard price ='29' type = {0} 
-                memberType= {membershipType} 
-                membershipEnd = {endDate}/>
+                memberType= {user.membershipType} 
+                membershipEnd = {user.membershipEnd}
+                getCustomerInfo = {getCustomerInfo}/>
                 <PricingCard price = '149' type = {1}
-                memberType= {membershipType}
-                membershipEnd ={endDate}
-                setEndDate= {setEndDate}
+                memberType= {user.membershipType}
+                membershipEnd ={user.membershipEnd}
+                getCustomerInfo = {getCustomerInfo}
                 setMembershipType={setMembershipType}/>
 
             </div>
