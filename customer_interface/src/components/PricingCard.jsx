@@ -58,10 +58,10 @@ export function PricingCard({ price, type, memberType, membershipEnd , setEndDat
                 }
             })
             console.log(response)
-            // const newUser = user; 
-            // newUser.membershipEndDate = response.data.membershipEnd; 
-            // setUser(newUser);
-            setEndDate(response.data.membershipEnd)
+            const newUser = user; 
+            newUser.membershipEndDate = response.data.membershipEnd; 
+            setUser(newUser);
+            // setEndDate(response.data.membershipEnd)
             // alert("Subcribe sucessfully")
         }catch(e){
             alert('Cancel current subscription first')

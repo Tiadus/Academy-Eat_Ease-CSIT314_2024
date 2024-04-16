@@ -8,7 +8,7 @@ const Membership = () => {
     console.log(user)
     const [endDate, setEndDate] = useState(user.membershipEnd)
     const [membershipType, setMembershipType] = useState(user.membershipType)
-
+    
     const getCustomerInfo = async () => {
         try {
           const response = await axios.get('http://localhost:4000/api/customer/information', {
@@ -23,20 +23,17 @@ const Membership = () => {
           throw new Error(e)
         }
       }
-    
-      useEffect(()=>{
-        getCustomerInfo()
-      }
-      ,[endDate|| membershipType])
-    
+
     return (
         <div className=''>
             {/* Banner */}
             <img className='h-[200px] w-full' src={banner} alt="" />
             <div className='flex gap-20 m-20  items-center justify-center'>
                 <PricingCard price ='29' type = {0} 
-                memberType= {membershipType} 
-                membershipEnd = {endDate}/>
+                memberType= {user.memberType} 
+                membershipEnd = {user.membershipEnd}
+                setEndDate= {setEndDate}
+                setMembershipType={setMembershipType}/>
                 <PricingCard price = '149' type = {1}
                 memberType= {membershipType}
                 membershipEnd ={endDate}
