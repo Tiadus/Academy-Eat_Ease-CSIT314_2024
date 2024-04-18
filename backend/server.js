@@ -733,6 +733,96 @@ app.post('/api/customer/order/review', async (req, res) => {
     }
 });
 
+app.post('/api/owner/register', async (req, res) => {
+    const restaurantEmail = req.body.email;
+    const restaurantPassword = req.body.password;
+    const restaurantName = req.body.name;
+    const restaurantDescription = req.body.des;
+    const restaurantPhone = req.body.phone;
+    const restaurantABN = req.body.abn;
+    const restaurantBanking = req.body.banking;
+    const restaurantLocation = req.body.location;
+    const restaurantLat = req.body.lat;
+    const restaurantLon = req.body.lon;
+    const selectedCategories = req.body.categories;
+
+    if (restaurantEmail === undefined || restaurantName === undefined || restaurantDescription === undefined || restaurantPhone === undefined || restaurantABN === undefined || restaurantBanking === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    if (restaurantPassword === undefined || restaurantLocation === undefined || restaurantLat === undefined || restaurantLon === undefined || selectedCategories === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    const categories = selectedCategories.split(",");
+    let registeredCategories = [];
+    for (let i = 0; i < categories.length;i++) {
+        if (isNaN(categories[i]) === false) {
+            registeredCategories.push(parseInt(categories[i]));
+        } else {
+            return res.send("Wrong Parameter"); 
+        }
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        const restaurantCode = 
+        await serviceRestaurant
+        .registerRestaurant(restaurantEmail, restaurantPassword, restaurantName, restaurantDescription, restaurantPhone,
+            restaurantABN, restaurantBanking, restaurantLocation, restaurantLat,restaurantLon, registeredCategories);
+        
+        res.json({restaurantCode: restaurantCode});
+    } catch (errorCode) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.post('/api/owner/login', async (req, res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        const restaurantInformation = serviceRestaurant.getRestaurantInformation();
+        res.json({restaurantCode: restaurantInformation.restaurantCode});
+    } catch (errorCode) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.get('/api/owner/information', async (req, res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        const restaurantInformation = serviceRestaurant.getRestaurantInformation();
+        res.json(restaurantInformation);
+    } catch (errorCode) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
 server.listen(4000, function() {
     console.log("Listening on port 4000");
 });
