@@ -852,6 +852,30 @@ app.post('/api/owner/edit/email', async (req,res) => {
     }
 });
 
+app.get('/api/owner/orders/incoming', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+    
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        const incomingOrders = await serviceRestaurant.getRestaurantIncomingOrders();
+
+        res.json(incomingOrders);
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
 server.listen(4000, function() {
     console.log("Listening on port 4000");
 });
