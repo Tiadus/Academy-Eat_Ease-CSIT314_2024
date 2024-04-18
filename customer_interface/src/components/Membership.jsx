@@ -20,7 +20,6 @@ const Membership = () => {
           throw new Error(e)
         }
       }
-    
     return (
         <div className=''>
             {/* Banner */}
@@ -29,12 +28,13 @@ const Membership = () => {
                 <PricingCard price ='29' type = {0} 
                 memberType= {user.membershipType} 
                 membershipEnd = {user.membershipEnd}
-                getCustomerInfo = {getCustomerInfo}/>
+                getCustomerInfo = {getCustomerInfo}
+                />
                 <PricingCard price = '149' type = {1}
                 memberType= {user.membershipType}
                 membershipEnd ={user.membershipEnd}
                 getCustomerInfo = {getCustomerInfo}
-                setMembershipType={setMembershipType}/>
+                />
 
             </div>
 
