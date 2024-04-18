@@ -25,7 +25,7 @@ class Restaurant {
 
             const sql1 = 'INSERT INTO RESTAURANT'
             const sql2 = '(restaurantEmail, restaurantName, restaurantDescription, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, restaurantTotalRating, restaurantTotalOrder, restaurantIMG, isActive)';
-            const sql3 = 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            const sql3 = 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             const restaurantRegisterSQL = `${sql1} ${sql2} ${sql3}`;
             const restaurantRegisterSQLValue = [
                 restaurantEmail, restaurantName, restaurantDescription, restaurantPhone, restaurantABN, restaurantBanking, restaurantLocation, restaurantLat, restaurantLon, 0, 0, "defaultRestaurant.png", true

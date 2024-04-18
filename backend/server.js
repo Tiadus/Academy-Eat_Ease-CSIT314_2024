@@ -733,6 +733,50 @@ app.post('/api/customer/order/review', async (req, res) => {
     }
 });
 
+app.post('/api/owner/register', async (req, res) => {
+    const restaurantEmail = req.body.email;
+    const restaurantPassword = req.body.password;
+    const restaurantName = req.body.name;
+    const restaurantDescription = req.body.des;
+    const restaurantPhone = req.body.phone;
+    const restaurantABN = req.body.abn;
+    const restaurantBanking = req.body.banking;
+    const restaurantLocation = req.body.location;
+    const restaurantLat = req.body.lat;
+    const restaurantLon = req.body.lon;
+    const selectedCategories = req.body.categories;
+
+    if (restaurantEmail === undefined || restaurantName === undefined || restaurantDescription === undefined || restaurantPhone === undefined || restaurantABN === undefined || restaurantBanking === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    if (restaurantPassword === undefined || restaurantLocation === undefined || restaurantLat === undefined || restaurantLon === undefined || selectedCategories === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    const categories = selectedCategories.split(",");
+    let registeredCategories = [];
+    for (let i = 0; i < categories.length;i++) {
+        if (isNaN(categories[i]) === false) {
+            registeredCategories.push(parseInt(categories[i]));
+        } else {
+            return res.send("Wrong Parameter"); 
+        }
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        const restaurantCode = 
+        await serviceRestaurant
+        .registerRestaurant(restaurantEmail, restaurantPassword, restaurantName, restaurantDescription, restaurantPhone,
+            restaurantABN, restaurantBanking, restaurantLocation, restaurantLat,restaurantLon, registeredCategories);
+        
+        res.json({restaurantCode: restaurantCode});
+    } catch (errorCode) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
 server.listen(4000, function() {
     console.log("Listening on port 4000");
 });
