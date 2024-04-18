@@ -7,6 +7,7 @@ import {
 } from "@material-tailwind/react";
 import { useAuth } from '../Context';
 import axios from 'axios'
+import ReviewOrder from "./ReviewOrder";
 
 export function OrderDetailCard({ orderCode }) {
     const [open, setOpen] = useState(false);
@@ -14,7 +15,6 @@ export function OrderDetailCard({ orderCode }) {
 
     const { isAuthenticated } = useAuth()
     const [orderDetail, setOrderDetail] = useState({})
-    console.log(orderCode)
     const fetchOrderDetails = async () => {
         try {
             const response = await axios.get('http://localhost:4000/api/customer/order/view', {
@@ -25,7 +25,7 @@ export function OrderDetailCard({ orderCode }) {
                     Authorization: isAuthenticated
                 }
             })
-            console.log(response.data)
+            // console.log(response.data)
             setOrderDetail(response.data)
         } catch (e) {
             throw new Error(e)
@@ -34,10 +34,10 @@ export function OrderDetailCard({ orderCode }) {
 
     useEffect(() => {
         fetchOrderDetails()
-        console.log(orderDetail)
+        // console.log(orderDetail)
     }, [])
     return (
-        <>
+        <div>
             <Button onClick={handleOpen}>Details</Button>
             <Dialog
                 size="xs"
@@ -45,7 +45,7 @@ export function OrderDetailCard({ orderCode }) {
                 handler={handleOpen}
                 className="bg-transparent shadow-none"
             >
-                <Card className="mx-auto w-full max-w-[24rem]">
+                <Card className="mx-auto w-full max-w-[50rem]">
                     <CardBody className="flex flex-col gap-4 max-h-[800px] overflow-auto">
                         <p className="text-3xl">Order Details</p>
                         {Object.keys(orderDetail).length > 0 && (<>
@@ -67,9 +67,11 @@ export function OrderDetailCard({ orderCode }) {
                                 </div>
                             )))
                         }
+
+                        <ReviewOrder orderCode={orderCode} handleClose={handleOpen}/>
                     </CardBody>
                 </Card>
             </Dialog>
-        </>
+        </div>
     );
 }
