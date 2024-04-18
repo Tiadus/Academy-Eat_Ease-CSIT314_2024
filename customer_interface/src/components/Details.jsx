@@ -5,101 +5,120 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import axios from 'axios'
+import axios from "axios";
 import { useAuth } from "../Context";
 import { useEffect, useState } from "react";
 
 export function Details() {
-  const [newEmail, setNewEmail] = useState('')
-  const [newName, setNewName] = useState('')
+  const [newEmail, setNewEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [newPhone, setNewPhone] = useState("");
+  const [newName, setNewName] = useState("");
   const { isAuthenticated, user, setUser } = useAuth();
   const getCustomerInfo = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/customer/information', {
-        headers: {
-          Authorization: isAuthenticated
+      const response = await axios.get(
+        "http://localhost:4000/api/customer/information",
+        {
+          headers: {
+            Authorization: isAuthenticated,
+          },
         }
-      })
+      );
 
-      console.log("customer information: ", response.data)
-      setUser(response.data)
+      console.log("customer information: ", response.data);
+      setUser(response.data);
     } catch (e) {
-      throw new Error(e)
+      throw new Error(e);
     }
-  }
+  };
 
   //Handle edit Email
   const handleEditEmail = async (newEmail) => {
     try {
-      const respone = await axios.post('http://localhost:4000/api/customer/edit/email', {
-        newEmail
-      }, {
-        headers: {
-          Authorization: isAuthenticated
+      const respone = await axios.post(
+        "http://localhost:4000/api/customer/edit/email",
+        {
+          newEmail,
+        },
+        {
+          headers: {
+            Authorization: isAuthenticated,
+          },
         }
-      })
+      );
 
-      alert(respone.data.message)
+      alert(respone.data.message);
     } catch (e) {
-      throw new Error(e)
+      throw new Error(e);
     }
-  }
+  };
 
   //Handle edit Name
-  const handleEditName = async (newName) => {
-    try {
-      const respone = await axios.post('http://localhost:4000/api/customer/edit/name', {
-        newName
-      }, {
-        headers: {
-          Authorization: isAuthenticated
-        }
-      })
+  // const handleEditName = async (newName) => {
+  //   try {
+  //     const respone = await axios.post('http://localhost:4000/api/customer/edit/name', {
+  //       newName
+  //     }, {
+  //       headers: {
+  //         Authorization: isAuthenticated
+  //       }
+  //     })
 
-      alert(respone.data.message)
-    } catch (e) {
-      throw new Error(e)
-    }
-  }
+  //     alert(respone.data.message)
+  //   } catch (e) {
+  //     throw new Error(e)
+  //   }
+  // }
 
   //Handle edit Phone
   const handleEditPhone = async (newPhone) => {
     try {
-      const respone = await axios.post('http://localhost:4000/api/customer/edit/phoneÏ', {
-        newPhone
-      }, {
-        headers: {
-          Authorization: isAuthenticated
+      const respone = await axios.post(
+        "http://localhost:4000/api/customer/edit/phone",
+        {
+          newPhone,
+        },
+        {
+          headers: {
+            Authorization: isAuthenticated,
+          },
         }
-      })
+      );
 
-      alert(respone.data.message)
+      alert(respone.data.message);
     } catch (e) {
-      throw new Error(e)
+      throw new Error(e);
     }
-  }
+  };
 
   //Handle edit Password
-  const handleEditPassword = async (newPassword) => {
+  const handleEditPassword = async (newPassword, confirmPassword) => {
+    if (newPassword !== confirmPassword) 
+    return alert("Passwords do not match")
     try {
-      const respone = await axios.post('http://localhost:4000/api/customer/edit/password', {
-        newPassword
-      }, {
-        headers: {
-          Authorization: isAuthenticated
+      const respone = await axios.post(
+        "http://localhost:4000/api/customer/edit/password",
+        {
+          newPassword,
+        },
+        {
+          headers: {
+            Authorization: isAuthenticated,
+          },
         }
-      })
+      );
 
-      alert(respone.data.message)
+      alert(respone.data.message);
     } catch (e) {
-      throw new Error(e)
+      throw new Error(e);
     }
-  }
-
+  };
 
   useEffect(() => {
     getCustomerInfo();
-  }, [])
+  }, []);
 
   return (
     <Card color="transparent" shadow={true} className="items-center">
@@ -145,12 +164,19 @@ export function Details() {
             size="lg"
             placeholder="(+81) 123 456 789"
             // value={user.customerName}
+            onChange={(e) => setNewPhone(e.target.value)}
             className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
           />
-          <Button>Save</Button>
+          <Button
+            onClick={() => {
+              handleEditPhone(newPhone);
+            }}
+          >
+            Save
+          </Button>
 
           <Typography variant="h6" color="blue-gray" className="-mb-3">
             Password
@@ -159,6 +185,7 @@ export function Details() {
             type="password"
             size="lg"
             placeholder="********"
+            onChange={(e) => setNewPassword(e.target.value)}
             className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
@@ -171,17 +198,20 @@ export function Details() {
             type="password"
             size="lg"
             placeholder="********"
+            onChange={(e) => setConfirmPassword(e.target.value)}
             className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
           />
+          <Button
+            onClick={() => handleEditPassword(newPassword, confirmPassword)}
+          >
+            Save
+          </Button>
         </div>
 
-        <Button className="mt-6" fullWidth>
-          Save changes
-        </Button>
-
+        <Button className="mt-6">Save all changes</Button>
       </form>
     </Card>
   );

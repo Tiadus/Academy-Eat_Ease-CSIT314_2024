@@ -45,7 +45,6 @@ const Profile = () => {
             <NavBar/>
             <div className='flex'>
                 <Sidebar onOptionClick={handleOptionClick} />
-                {console.log(selectedOption)}
                 <div className='w-full'>
                     {componentToRender}
 

@@ -37,7 +37,7 @@ const ReviewOrder = ({orderCode, handleClose}) => {
     }
   }
   return (
-    <div>
+    <div className="">
       <Button onClick={handleOpen}>Confirm delivery</Button>
       <Dialog
         size="xs"

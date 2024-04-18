@@ -22,7 +22,7 @@ const OrderCard = ({ restaurantCode,
                     <p >Status: {orderStatus === 1 ? 'Pending' : 'In Delivery'}</p>
                     <p>Total: {orderCost} $</p>
 
-                <OrderDetailCard orderCode={orderCode}/>
+                <OrderDetailCard orderCode={orderCode} orderStatus={orderStatus}/>
                 </div>
                 {/* <CiTrash onClick={() => handleDeleteOrder(isAuthenticated, orderCode)} /> */}
             </div>

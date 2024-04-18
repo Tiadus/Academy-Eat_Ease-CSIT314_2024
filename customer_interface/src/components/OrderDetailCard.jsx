@@ -9,7 +9,7 @@ import { useAuth } from '../Context';
 import axios from 'axios'
 import ReviewOrder from "./ReviewOrder";
 
-export function OrderDetailCard({ orderCode }) {
+export function OrderDetailCard({ orderCode, orderStatus }) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen((cur) => !cur);
 
@@ -67,8 +67,10 @@ export function OrderDetailCard({ orderCode }) {
                                 </div>
                             )))
                         }
-
+                        {orderStatus ===2 ? 
                         <ReviewOrder orderCode={orderCode} handleClose={handleOpen}/>
+                        :
+                        <></>}
                     </CardBody>
                 </Card>
             </Dialog>
