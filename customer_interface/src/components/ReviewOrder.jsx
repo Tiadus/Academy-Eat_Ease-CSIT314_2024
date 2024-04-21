@@ -37,8 +37,8 @@ const ReviewOrder = ({orderCode, handleClose}) => {
     }
   }
   return (
-    <div className="">
-      <Button onClick={handleOpen}>Confirm delivery</Button>
+    <div className=" w-full h-10 ">
+      <Button className="" onClick={handleOpen}>Confirm delivery</Button>
       <Dialog
         size="xs"
         open={open}
