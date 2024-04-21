@@ -1295,6 +1295,40 @@ app.post('/api/owner/order/reject', async (req,res) => {
     }
 });
 
+app.get('/api/owner/revenue', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
+
+    if (startDate === undefined || endDate === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    if (isNaN(Date.parse(startDate)) === true || isNaN(Date.parse(endDate)) === true) {
+        return res.send("Wrong Format");
+    }
+    
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        const revenueStatus = await serviceRestaurant.restaurantViewOrderRevenueStatus(startDate, endDate);
+        res.json(revenueStatus);
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
 server.listen(4000, function() {
     console.log("Listening on port 4000");
 });
