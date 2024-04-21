@@ -115,9 +115,39 @@ app.post('/api/customer/edit/email', async (req, res) => {
     try {
         const serviceCustomer = new ServiceCustomer();
         await serviceCustomer.authenticateCustomer(customerEmail, customerPassword);
-        await serviceCustomer.setCustomerInformation(newEmail, null, null);
+        await serviceCustomer.setCustomerInformation(newEmail, null, null, null);
 
         res.status(200).send({ message: 'Email Successfully Changed' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.post('/api/customer/edit/name', async (req, res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const customerEmail = authenParts[0];
+    const customerPassword = authenParts[1];
+
+    const newName = req.body.newName;
+
+    if (newName === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    try {
+        const serviceCustomer = new ServiceCustomer();
+        await serviceCustomer.authenticateCustomer(customerEmail, customerPassword);
+        await serviceCustomer.setCustomerInformation(null, null, null, newName);
+
+        res.status(200).send({ message: 'Name Successfully Changed' });
     } catch (error) {
         res.status(error.status).json({error: error.message});
     }
@@ -145,7 +175,7 @@ app.post('/api/customer/edit/phone', async (req, res) => {
     try {
         const serviceCustomer = new ServiceCustomer();
         await serviceCustomer.authenticateCustomer(customerEmail, customerPassword);
-        await serviceCustomer.setCustomerInformation(null, newPhone, null);
+        await serviceCustomer.setCustomerInformation(null, newPhone, null, null);
 
         res.status(200).send({ message: 'Phone Successfully Changed' });
     } catch (error) {
@@ -175,7 +205,7 @@ app.post('/api/customer/edit/password', async (req, res) => {
     try {
         const serviceCustomer = new ServiceCustomer();
         await serviceCustomer.authenticateCustomer(customerEmail, customerPassword);
-        await serviceCustomer.setCustomerInformation(null, null, newPassword);
+        await serviceCustomer.setCustomerInformation(null, null, newPassword, null);
 
         res.status(200).send({ message: 'Password Successfully Changed' });
     } catch (error) {
