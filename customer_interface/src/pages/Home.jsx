@@ -3,11 +3,13 @@ import { LuMapPin } from "react-icons/lu";
 import Filter from '../components/Filter';
 import RestaurantCard from '../components/RestaurantCard';
 import { Link, useLocation } from 'react-router-dom';
+
 import axios from 'axios'; // Import axios
 import { CategoryCard } from '../components/CategoryCard';
 import NavBar from '../components/NavBar';
 
 const Home = () => {
+
 
   const [restaurants, setRestaurants] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -76,6 +78,7 @@ const Home = () => {
   useEffect(() => {
     fetchCategory()
     handleSearch()
+    console.log('mounted')
   }, [])
 
   useEffect(() => {

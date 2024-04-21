@@ -5,7 +5,7 @@ import { useAuth } from '../Context';
 const LogInSignUp = () => {
     const [state, setState] = useState("Log in");
     // const [customerCode, setCustomerCode] = useState(0)
-    const { isAuthenticated, login, setIsAuthenticated } = useAuth();
+    const { isAuthenticated, login, setIsAuthenticated , setTotalItems} = useAuth();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -63,10 +63,11 @@ const LogInSignUp = () => {
 
             console.log(response.data)
             console.log('New customer code:', response.data.customerCode);
+            setTotalItems(response.data.totalItemIncart)
             navigate('/page')
 
         } catch (error) {
-            // alert('Wrong email or password', error.message);
+            alert('Wrong email or password', error.message);
         }
     };
 
