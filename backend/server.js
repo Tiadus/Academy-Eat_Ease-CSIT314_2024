@@ -937,7 +937,36 @@ app.post('/api/owner/edit/name', async (req,res) => {
     } catch (error) {
         res.status(error.status).json({error: error.message});
     }
-})
+});
+
+app.post('/api/owner/edit/description', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const newDes = req.body.newDes;
+
+    if (newDes === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.setRestaurantInformation(null, null, null, null, newDes, null, null, null, null, null);
+        res.status(200).send({ message: 'Description Successfully Changed' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
 
 app.get('/api/owner/orders/incoming', async (req,res) => {
     const authen = req.headers.authorization;
