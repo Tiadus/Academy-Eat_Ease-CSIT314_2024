@@ -60,6 +60,7 @@ class ServiceCustomer {
                 customerCode: this.aCustomer.customerCode,
                 customerEmail: this.aCustomer.customerEmail,
                 customerName: this.aCustomer.customerName,
+                customerPhone: this.aCustomer.customerPhone,
                 membershipType: this.membership.membershipType,
                 membershipEnd: this.membership.membershipEnd,
                 totalItemIncart: totalItemIncart
