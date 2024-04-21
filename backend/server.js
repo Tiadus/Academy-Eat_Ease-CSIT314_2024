@@ -1085,6 +1085,38 @@ app.get('/api/owner/menu/view', async (req, res) => {
     }
 });
 
+app.post('/api/owner/edit/menu/add', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const itemName = req.body.itemName;
+    const itemDes = req.body.itemDes;
+    const itemPrice = req.body.itemPrice;
+
+    if (itemName === undefined || itemDes === undefined || itemPrice === undefined || isNaN(itemPrice) === true) {
+        return res.send("Wrong Parameter");
+    }
+    
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.addRestaurantItem(itemName, itemDes, itemPrice);
+
+        res.status(200).send({ message: 'Item Successfully Added' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
 app.get('/api/owner/orders/incoming', async (req,res) => {
     const authen = req.headers.authorization;
     if (authen === undefined) {

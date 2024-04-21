@@ -109,9 +109,9 @@ class ServiceRestaurant {
         }
     }
 
-    async addRestaurantItem(itemName, itemPrice) {
+    async addRestaurantItem(itemName, itemDes, itemPrice) {
         try {
-            await this.aRestaurant.addItem(itemName, itemPrice);
+            await this.aRestaurant.addItem(itemName, itemDes, itemPrice);
             return;
         } catch (error) {
             throw error;
