@@ -60,6 +60,7 @@ class ServiceCustomer {
                 customerCode: this.aCustomer.customerCode,
                 customerEmail: this.aCustomer.customerEmail,
                 customerName: this.aCustomer.customerName,
+                customerPhone: this.aCustomer.customerPhone,
                 membershipType: this.membership.membershipType,
                 membershipEnd: this.membership.membershipEnd,
                 totalItemIncart: totalItemIncart
@@ -86,13 +87,15 @@ class ServiceCustomer {
         }
     }
 
-    async setCustomerInformation(newEmail, newPhone, newPassword) {
+    async setCustomerInformation(newEmail, newPhone, newPassword, newName) {
         if (newEmail !== null) {
             await this.aCustomer.setEmail(newEmail);
         } else if (newPhone !== null) {
             await this.aCustomer.setPhone(newPhone);
         } else if (newPassword !== null) {
             await this.aCustomer.setPassword(newPassword);
+        } else if (newName !== null) {
+            await this.aCustomer.setName(newName);
         }
         return 200;
     }

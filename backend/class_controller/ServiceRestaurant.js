@@ -109,9 +109,9 @@ class ServiceRestaurant {
         }
     }
 
-    async addRestaurantItem(itemName, itemPrice) {
+    async addRestaurantItem(itemName, itemDes, itemPrice) {
         try {
-            await this.aRestaurant.addItem(itemName, itemPrice);
+            await this.aRestaurant.addItem(itemName, itemDes, itemPrice);
             return;
         } catch (error) {
             throw error;
@@ -130,9 +130,9 @@ class ServiceRestaurant {
         }
     }
 
-    async editRestaurantItem(newItemName, itemPrice, oldItemName) {
+    async editRestaurantItem(newItemName, itemDes, itemPrice, oldItemName) {
         try {
-            const affectedRows = await this.aRestaurant.editItem(newItemName, itemPrice, oldItemName);
+            const affectedRows = await this.aRestaurant.editItem(newItemName, itemDes, itemPrice, oldItemName);
             if (affectedRows === 0) {
                 return Promise.reject(Object.assign(new Error("Forbidden"), { status: 403 }));
             }

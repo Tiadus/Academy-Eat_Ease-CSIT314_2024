@@ -103,6 +103,30 @@ class Customer {
         }
     }
 
+    async setName(newName) {
+        const {pool} = require('../Database.js');
+        try {
+            const sql = 'UPDATE CUSTOMER SET customerName = ? WHERE customerCode = ?';
+            const sqlValue = [newName, this.customerCode];
+
+            const updateResult = await pool.query(sql, sqlValue);
+
+            if (updateResult[0].affectedRows === 0) {
+                const error = new Error("Forbidden");
+                error.status = 403;
+                return Promise.reject(error);
+            }
+
+            return 200;
+        }
+        catch(dbError) {
+            console.log("Error When Updating Customer Name: " + dbError);
+            const error = new Error("Internal Server Error");
+            error.status = 500;
+            throw error;
+        }
+    }
+
     async setPhone(newPhone) {
         const {pool} = require('../Database.js');
         try {

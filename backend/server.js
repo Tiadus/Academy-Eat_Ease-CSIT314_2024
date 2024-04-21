@@ -115,9 +115,39 @@ app.post('/api/customer/edit/email', async (req, res) => {
     try {
         const serviceCustomer = new ServiceCustomer();
         await serviceCustomer.authenticateCustomer(customerEmail, customerPassword);
-        await serviceCustomer.setCustomerInformation(newEmail, null, null);
+        await serviceCustomer.setCustomerInformation(newEmail, null, null, null);
 
         res.status(200).send({ message: 'Email Successfully Changed' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.post('/api/customer/edit/name', async (req, res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const customerEmail = authenParts[0];
+    const customerPassword = authenParts[1];
+
+    const newName = req.body.newName;
+
+    if (newName === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    try {
+        const serviceCustomer = new ServiceCustomer();
+        await serviceCustomer.authenticateCustomer(customerEmail, customerPassword);
+        await serviceCustomer.setCustomerInformation(null, null, null, newName);
+
+        res.status(200).send({ message: 'Name Successfully Changed' });
     } catch (error) {
         res.status(error.status).json({error: error.message});
     }
@@ -145,7 +175,7 @@ app.post('/api/customer/edit/phone', async (req, res) => {
     try {
         const serviceCustomer = new ServiceCustomer();
         await serviceCustomer.authenticateCustomer(customerEmail, customerPassword);
-        await serviceCustomer.setCustomerInformation(null, newPhone, null);
+        await serviceCustomer.setCustomerInformation(null, newPhone, null, null);
 
         res.status(200).send({ message: 'Phone Successfully Changed' });
     } catch (error) {
@@ -175,7 +205,7 @@ app.post('/api/customer/edit/password', async (req, res) => {
     try {
         const serviceCustomer = new ServiceCustomer();
         await serviceCustomer.authenticateCustomer(customerEmail, customerPassword);
-        await serviceCustomer.setCustomerInformation(null, null, newPassword);
+        await serviceCustomer.setCustomerInformation(null, null, newPassword, null);
 
         res.status(200).send({ message: 'Password Successfully Changed' });
     } catch (error) {
@@ -845,8 +875,336 @@ app.post('/api/owner/edit/email', async (req,res) => {
     try {
         const serviceRestaurant = new ServiceRestaurant();
         await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
-        await serviceRestaurant.setRestaurantInformation(newEmail, null, null, null, null, null, null, null, null);
+        await serviceRestaurant.setRestaurantInformation(newEmail, null, null, null, null, null, null, null, null, null);
         res.status(200).send({ message: 'Email Successfully Changed' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.post('/api/owner/edit/phone', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const newPhone = req.body.newPhone;
+
+    if (newPhone === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.setRestaurantInformation(null, newPhone, null, null, null, null, null, null, null, null);
+        res.status(200).send({ message: 'Phone Successfully Changed' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.post('/api/owner/edit/password', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const newPassword = req.body.newPassword;
+
+    if (newPassword === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.setRestaurantInformation(null, null, newPassword, null, null, null, null, null, null, null);
+        res.status(200).send({ message: 'Password Successfully Changed' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.post('/api/owner/edit/name', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const newName = req.body.newName;
+
+    if (newName === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.setRestaurantInformation(null, null, null, newName, null, null, null, null, null, null);
+        res.status(200).send({ message: 'Name Successfully Changed' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.post('/api/owner/edit/description', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const newDes = req.body.newDes;
+
+    if (newDes === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.setRestaurantInformation(null, null, null, null, newDes, null, null, null, null, null);
+        res.status(200).send({ message: 'Description Successfully Changed' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.post('/api/owner/edit/address', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const newAddress = req.body.newAddress;
+    const newLat = req.body.newLat;
+    const newLon = req.body.newLon;
+
+    if (newAddress === undefined && newLat === undefined && newLon === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.setRestaurantInformation(null, null, null, null, null, newAddress, newLat, newLon, null, null);
+        res.status(200).send({ message: 'Address Successfully Changed' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.post('/api/owner/edit/abn', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const newABN = req.body.newABN;
+
+    if (newABN === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.setRestaurantInformation(null, null, null, null, null, null, null, null, newABN, null);
+        res.status(200).send({ message: 'ABN Successfully Changed' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.post('/api/owner/edit/banking', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const newBanking = req.body.newBanking;
+
+    if (newBanking === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.setRestaurantInformation(null, null, null, null, null, null, null, null, null, newBanking);
+        res.status(200).send({ message: 'Banking Successfully Changed' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.get('/api/owner/menu/view', async (req, res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        const restaurantPublicInformation = serviceRestaurant.getRestaurantPublicInformation();
+        const restaurantMenuItems = await serviceRestaurant.getRestaurantMenuItems();
+
+        res.json({
+            restaurantInformation: restaurantPublicInformation,
+            restaurantItems: restaurantMenuItems
+        });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.post('/api/owner/edit/menu/add', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const itemName = req.body.itemName;
+    const itemDes = req.body.itemDes;
+    const itemPrice = req.body.itemPrice;
+
+    if (itemName === undefined || itemDes === undefined || itemPrice === undefined || isNaN(itemPrice) === true) {
+        return res.send("Wrong Parameter");
+    }
+    
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.addRestaurantItem(itemName, itemDes, itemPrice);
+
+        res.status(200).send({ message: 'Item Successfully Added' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.post('/api/owner/edit/menu/del', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const itemName = req.body.itemName;
+
+    if (itemName === undefined) {
+        return res.send("Wrong Parameter");
+    }
+    
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.deleteRestaurantItem(itemName);
+
+        res.status(200).send({ message: 'Item Successfully Deleted' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.post('/api/owner/edit/item', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const newItemName = req.body.newItemName;
+    const oldItemName = req.body.oldItemName;
+    const itemDes = req.body.itemDes;
+    const itemPrice = req.body.itemPrice;
+
+    if (newItemName === undefined || itemPrice === undefined || isNaN(itemPrice) === true || itemDes === undefined || oldItemName === undefined) {
+        return res.send("Wrong Parameter");
+    }
+    
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.editRestaurantItem(newItemName, itemDes, parseFloat(itemPrice), oldItemName);
+
+        res.status(200).send({ message: 'Item Successfully Edited' });
     } catch (error) {
         res.status(error.status).json({error: error.message});
     }
@@ -962,6 +1320,40 @@ app.post('/api/owner/order/reject', async (req,res) => {
         await serviceRestaurant.restaurantRejectsOrder(orderCode, rejectReason);
 
         res.status(200).send({ message: 'Order Successfully Rejected' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
+app.get('/api/owner/revenue', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
+
+    if (startDate === undefined || endDate === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    if (isNaN(Date.parse(startDate)) === true || isNaN(Date.parse(endDate)) === true) {
+        return res.send("Wrong Format");
+    }
+    
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        const revenueStatus = await serviceRestaurant.restaurantViewOrderRevenueStatus(startDate, endDate);
+        res.json(revenueStatus);
     } catch (error) {
         res.status(error.status).json({error: error.message});
     }

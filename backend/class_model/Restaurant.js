@@ -265,11 +265,11 @@ class Restaurant {
         }
     }
 
-    async addItem(itemName, itemPrice, itemDescription) {
+    async addItem(itemName, itemDescription, itemPrice) {
         const {pool} = require('../Database.js');
         try {
             const sql = 'INSERT INTO RESTAURANT_ITEM VALUES(?, ?, ?, ?, ?)';
-            const sqlValue = [this.restaurantCode, itemName, itemPrice, itemDescription, "defaultItem.png"];
+            const sqlValue = [this.restaurantCode, itemName, itemDescription, itemPrice, "defaultItem.png"];
 
             await pool.query(sql, sqlValue);
 
