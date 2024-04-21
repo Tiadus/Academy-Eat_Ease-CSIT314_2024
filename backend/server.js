@@ -1057,6 +1057,34 @@ app.post('/api/owner/edit/banking', async (req,res) => {
     }
 });
 
+app.get('/api/owner/menu/view', async (req, res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        const restaurantPublicInformation = serviceRestaurant.getRestaurantPublicInformation();
+        const restaurantMenuItems = await serviceRestaurant.getRestaurantMenuItems();
+
+        res.json({
+            restaurantInformation: restaurantPublicInformation,
+            restaurantItems: restaurantMenuItems
+        });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
 app.get('/api/owner/orders/incoming', async (req,res) => {
     const authen = req.headers.authorization;
     if (authen === undefined) {
