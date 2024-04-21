@@ -852,6 +852,35 @@ app.post('/api/owner/edit/email', async (req,res) => {
     }
 });
 
+app.post('/api/owner/edit/phone', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const newPhone = req.body.newPhone;
+
+    if (newPhone === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.setRestaurantInformation(null, newPhone, null, null, null, null, null, null, null);
+        res.status(200).send({ message: 'Phone Successfully Changed' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
 app.get('/api/owner/orders/incoming', async (req,res) => {
     const authen = req.headers.authorization;
     if (authen === undefined) {
