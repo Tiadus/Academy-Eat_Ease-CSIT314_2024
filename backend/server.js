@@ -1050,7 +1050,7 @@ app.post('/api/owner/edit/banking', async (req,res) => {
     try {
         const serviceRestaurant = new ServiceRestaurant();
         await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
-        await serviceRestaurant.setRestaurantInformation(null, null, null, null, null, null, null, null, newBanking);
+        await serviceRestaurant.setRestaurantInformation(null, null, null, null, null, null, null, null, null, newBanking);
         res.status(200).send({ message: 'Banking Successfully Changed' });
     } catch (error) {
         res.status(error.status).json({error: error.message});
