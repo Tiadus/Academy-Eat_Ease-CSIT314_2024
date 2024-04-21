@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Card,
     CardHeader,
@@ -9,10 +9,19 @@ import {
    
 export  const CategoryCard= ({catCode, name, image,active, selectCat})=> {
    
+    // const [selected, setSelected] = useState(active===name)
     return (
       <Card color={active===name? 'light-blue': 'transparent'} shadow={true} 
             className="w-[235px] h-[70px] max-w-[26rem] border-2 m-5"
-            onClick={()=>selectCat(name)}>
+            onClick={()=>{
+              console.log(active +" "+ name)
+              if(active === name){
+                selectCat('')
+              }else {
+                selectCat(name)
+              }
+              // setSelected(!selected),
+              }}>
         <CardHeader
           color="transparent"
           floated={false}

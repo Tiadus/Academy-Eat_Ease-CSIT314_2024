@@ -12,7 +12,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   const handleSearch = () => {
-    navigate(`/home?kw=${address}&rlb=3&r=5&lat=-34.408909&lon=150.8854373`);
+    navigate(`/home?kw=${address}&lat=-34.408909&lon=150.8854373`);
   };
 
   return (

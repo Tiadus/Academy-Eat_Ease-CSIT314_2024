@@ -3,7 +3,7 @@ import image from '../assets/Images/guzman.png'
 import { FaArrowCircleRight } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 
-const RestaurantCard = ({name, code, rating, restaurantCode, location}) => {
+const RestaurantCard = ({name, code,desc, rating, restaurantCode, location}) => {
     const navigate = useNavigate(); 
     const handleOnClick = () => {
         // console.log('handleOnClick')
@@ -14,7 +14,7 @@ const RestaurantCard = ({name, code, rating, restaurantCode, location}) => {
             <img className='w-[150px] h-[150px] col-start-1 col-span-1' src={image} alt="" />
             <div className='col-start-2 col-span-2 '>
                 <p className='text-2xl font-semibold '>{name}</p>
-                <p >MExian dish pow pow!!!!!.</p>
+                <p >Description: {desc}</p>
                 <p>Location: {location}</p>
                 <p>Restaurant Code {restaurantCode}</p>
                 <p >Rating {rating}</p>
