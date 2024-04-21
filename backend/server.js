@@ -999,6 +999,35 @@ app.post('/api/owner/edit/address', async (req,res) => {
     }
 });
 
+app.post('/api/owner/edit/abn', async (req,res) => {
+    const authen = req.headers.authorization;
+    if (authen === undefined) {
+        return res.send("Server Unavailable");
+    }
+
+    const encodedCredential = authen.split(" ")[1];
+    const decodedCredential = atob(encodedCredential);
+
+    const authenParts = decodedCredential.split(":");
+    const restaurantEmail = authenParts[0];
+    const restaurantPassword = authenParts[1];
+
+    const newABN = req.body.newABN;
+
+    if (newABN === undefined) {
+        return res.send("Wrong Parameter");
+    }
+
+    try {
+        const serviceRestaurant = new ServiceRestaurant();
+        await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
+        await serviceRestaurant.setRestaurantInformation(null, null, null, null, null, null, null, null, newABN, null);
+        res.status(200).send({ message: 'ABN Successfully Changed' });
+    } catch (error) {
+        res.status(error.status).json({error: error.message});
+    }
+});
+
 app.get('/api/owner/orders/incoming', async (req,res) => {
     const authen = req.headers.authorization;
     if (authen === undefined) {
