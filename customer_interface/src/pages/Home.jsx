@@ -19,17 +19,17 @@ const Home = () => {
 
   // Extract parameters from URL
   const kw = searchParams.get('kw');
-  const rlb = searchParams.get('rlb');
-  const r = searchParams.get('r');
+  // const rlb = searchParams.get('rlb');
+  // const r = searchParams.get('r');
   const lat = searchParams.get('lat');
   const lon = searchParams.get('lon');
 
-  const handleSearch = async () => {
+  const handleSearch = async (rlb, r) => {
     try {
       const response = await axios.get('http://localhost:4000/api/restaurants', {
         params: {
           kw: kw,
-          // rlb: rlb,
+          rlb: rlb,
           r: r,
           lat: lat,
           lon: lon
@@ -114,7 +114,7 @@ const Home = () => {
       <div className='grid grid-cols-10 w-3/4 w-full'>
         {/* Filter */}
         <div className='col-span-3 ml-[160px]'>
-          <Filter />
+          <Filter handleSearch={handleSearch}/>
         </div>
         {/* Restaurant list */}
         <div className='flex flex-col col-span-5 gap-5'>
