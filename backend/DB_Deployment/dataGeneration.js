@@ -50,7 +50,7 @@ function getRandomInt(min, max) {
 function generateRestaurants(geoPoints, restaurantQuantity, categories) {
     let restaurantList = [];
     for (let i = 0; i < restaurantQuantity; i++) {
-        const restaurantCategory = (i+1) % 10;
+        const restaurantCategory = (i) % 10;
 
         const restaurantEmail = "restaurant" + (i+1).toString() + "@mail.com"
         const restaurantName = "Restaurant " + (i+1).toString();
@@ -64,7 +64,7 @@ function generateRestaurants(geoPoints, restaurantQuantity, categories) {
         const restaurantTotalOrder = getRandomInt(1, 10);
         const restaurantTotalRating = getRandomInt(restaurantTotalOrder, restaurantTotalOrder*5);
         //const restaurantIMG = "defaultRestaurant.png";
-        const restaurantIMG = `${categories[restaurantCategory]}Restaurant.png`
+        const restaurantIMG = `${categories[restaurantCategory]}Restaurant.jpg`
         const isActive = true;
 
         const aRestaurant = {
@@ -109,14 +109,14 @@ function generateRestaurantAuthentications(restaurants) {
 function generateRestaurantItems(restaurants, categories) {
     let restaurantItemList = [];
     for (let i = 0; i < restaurants.length; i++) {
-        const restaurantCategory = (i+1) % 10;
+        const restaurantCategory = (i+0) % 10;
         for (let j = 0; j < 5; j++) {
             const restaurantCode = i + 1;
             const itemName = restaurants[i].restaurantName + " Item " + (j+1);
             const itemDescription = `${restaurants[i].restaurantName} Item ${j+1} Description`
             const itemPrice = getRandomInt(10, 30);
             //const itemIMG = "defaultItem.png";
-            const itemIMG = `${categories[restaurantCategory]}${j+1}.png`;
+            const itemIMG = `${categories[restaurantCategory]}${j+1}.jpg`;
     
             const aRestaurantItem = {
                 restaurantCode: restaurantCode,

@@ -17,13 +17,13 @@ export function RestaurantInfo({info}) {
                     {info.restaurantName}
                 </Typography>
                 <Typography>
-                    MEXICAN FOOD WOOOHOOO....
+                    {info.restaurantDescription}
                 </Typography>
                 <Typography className="  gap-2 ">
                     Ratings: {info.restaurantRating}
                 </Typography>
                 <Typography>
-                    Location: University of Wollongong, NSW 2500
+                    Location: {info.restaurantLocation}
                 </Typography>
                 <Typography>
                     Phone: {info.restaurantPhone}

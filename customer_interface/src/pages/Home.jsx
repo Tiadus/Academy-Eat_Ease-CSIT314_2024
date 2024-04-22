@@ -127,6 +127,7 @@ const Home = () => {
               rating={restaurant.rating}
               restaurantCode={restaurant.restaurantCode}
               location={restaurant.restaurantLocation}
+              img = {restaurant.restaurantIMG}
             />
 
           ))}

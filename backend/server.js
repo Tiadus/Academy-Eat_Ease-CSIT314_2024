@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const WebSocket = require('ws');
 const cors = require('cors');
+const path = require('path');
 
 const ServiceCustomer = require('./class_controller/ServiceCustomer.js');
 const ServiceRestaurant = require('./class_controller/ServiceRestaurant.js');
@@ -16,6 +17,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+var imagesDir = path.join(__dirname, 'images');
+app.use(express.static(imagesDir));
 
 app.post('/api/customer/register', async (req,res) => {
     const body = req.body;
