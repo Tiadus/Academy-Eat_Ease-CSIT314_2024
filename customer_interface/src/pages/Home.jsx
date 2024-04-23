@@ -54,14 +54,14 @@ const Home = () => {
   }
 
   // Handle filter category
-  const handleFilterCategory = async (selectedCat, lat, lon) => {
+  const handleFilterCategory = async (selectedCat,rlb,r) => {
     try {
       const response = await axios.get('http://localhost:4000/api/restaurants/' + selectedCat, {
         params: {
-          // rlb: rlb,
-          // r: r,
-          // lat: lat,
-          // lon: lon
+          rlb: rlb,
+          r: r,
+          lat: lat,
+          lon: lon
         }
       })
       console.log(response.data)
@@ -114,7 +114,7 @@ const Home = () => {
       <div className='grid grid-cols-10 w-3/4 w-full'>
         {/* Filter */}
         <div className='col-span-3 ml-[160px]'>
-          <Filter lat={lat} lon = {lon} handleSearch={handleSearch}/>
+          <Filter selectedCat={selectedCat} handleFilterCategory={handleFilterCategory} handleSearch={handleSearch}/>
         </div>
         {/* Restaurant list */}
         <div className='flex flex-col col-span-5 gap-5'>
