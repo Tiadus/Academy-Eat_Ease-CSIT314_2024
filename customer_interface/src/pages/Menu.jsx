@@ -63,7 +63,7 @@ const Menu = () => {
     <div className='flex flex-col items-center '>
       <NavBar/>
       {/* Restaurant Banner */}
-      <img className='h-[300px] w-full' src={banner} alt="" />
+      <img className='h-[300px] w-full' src={`http://localhost:4000/${restaurantInfo.restaurantIMG}`} alt="" />
 
       {/* Restaurant info */}
       <RestaurantInfo info = {restaurantInfo}/>
@@ -75,6 +75,7 @@ const Menu = () => {
                     name={item.itemName} 
                     price ={item.itemPrice}
                     image = {item.itemIMG}
+                    des = {item.itemDescription}
                     handleAdd = {handleAdd}/>
         ))}
         

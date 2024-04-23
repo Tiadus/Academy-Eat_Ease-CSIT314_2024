@@ -37,9 +37,9 @@ async function deployDatabase() {
         await createTables(databaseConnection, filePath);
 
         const randomGeoPoints = generateRandomPoints(initialCoordinate, radius, restaurantQuantity);
-        const restaurants = generateRestaurants(randomGeoPoints, restaurantQuantity);
+        const restaurants = generateRestaurants(randomGeoPoints, restaurantQuantity, categories);
         const restaurantAuthentications = generateRestaurantAuthentications(restaurants); 
-        const restaurantItems = generateRestaurantItems(restaurants);
+        const restaurantItems = generateRestaurantItems(restaurants, categories);
 
         await batchInsertRestaurant(databaseConnection, restaurants, restaurantAuthentications, restaurantItems);
 
