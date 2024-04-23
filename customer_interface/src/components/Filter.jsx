@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { Radio, Button } from "@material-tailwind/react";
 
-const Filter = ({ handleSearch }) => {
+const Filter = ({lat,lon, handleSearch }) => {
   const [ratings, setRatings] = useState(1);
   const [distances, setDistances] = useState(10);
-  const [clear, setClear] = useState(false)
+  const [clear, setClear] = useState(false);
+ 
   const handleFilter = () => {
     // Call the parent component's filter function with the selected ratings and distances
     // onFilter({ ratings, distances });
@@ -50,6 +51,7 @@ const Filter = ({ handleSearch }) => {
               className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center"
             >
               <Radio
+                key={rating}
                 name="rating"
                 value={rating}
                 label={rating}

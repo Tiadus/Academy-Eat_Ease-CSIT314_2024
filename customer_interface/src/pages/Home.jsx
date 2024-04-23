@@ -114,7 +114,7 @@ const Home = () => {
       <div className='grid grid-cols-10 w-3/4 w-full'>
         {/* Filter */}
         <div className='col-span-3 ml-[160px]'>
-          <Filter handleSearch={handleSearch}/>
+          <Filter lat={lat} lon = {lon} handleSearch={handleSearch}/>
         </div>
         {/* Restaurant list */}
         <div className='flex flex-col col-span-5 gap-5'>

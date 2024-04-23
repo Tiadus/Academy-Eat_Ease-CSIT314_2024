@@ -15,6 +15,30 @@ const LandingPage = () => {
     navigate(`/home?kw=${address}&lat=-34.408909&lon=150.8854373`);
   };
 
+  const handleSearchAddress = async (address)=> {
+
+    try {
+      const response = await axios.get('https://nominatim.openstreetmap.org/search', {
+        params: {
+          q:address, 
+          format: 'json',
+          limit:1
+        }
+      });
+      const displayAddress = response.data[0].display_name;
+      const lat = response.data[0].lat;
+      const lon = response.data[0].lon; 
+      console.log(response.data)
+      console.log(displayAddress, lat,lon);
+  
+      navigate(`/home?kw=&lat=${lat}&lon=${lon}`)
+      return response.data;
+
+    }catch (err) {
+      throw err
+    }
+
+  }
   return (
     <div className="flex flex-col items-center">
       <img src={landingImg} className="w-full h-[650px]"></img>
@@ -28,6 +52,7 @@ const LandingPage = () => {
         <Button
         //   onClick={handleSearch}
           className="col-span-2 rounded  px-5 py-2 ml-[40px]"
+          onClick={()=>{ handleSearchAddress(address)}}
         >
           Search
         </Button>
