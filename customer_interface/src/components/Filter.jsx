@@ -6,6 +6,7 @@ const Filter = ({selectedCat, handleFilterCategory, handleSearch }) => {
   const [ratings, setRatings] = useState(1);
   const [distances, setDistances] = useState(10);
   const [clear, setClear] = useState(false);
+  const [clearCount, setClearCount] = useState(0);
  
   const handleFilter = () => {
     // Call the parent component's filter function with the selected ratings and distances
@@ -17,6 +18,8 @@ const Filter = ({selectedCat, handleFilterCategory, handleSearch }) => {
   const handleClearFilter = () => {
     setRatings(null); // Clear ratings selection
     setDistances(null); 
+    const newClear = clearCount + 1;
+    setClearCount(newClear);
     handleSearch(0, 100);
   }
   //   const handleRatingChange = (e) => {
@@ -38,6 +41,7 @@ const Filter = ({selectedCat, handleFilterCategory, handleSearch }) => {
   useEffect(()=>{
     handleClearFilter()
   },[clear])
+
   return (
     <div className="flex flex-col gap-5 items-center">
       <h2 className="text-2xl">Filter by</h2>
@@ -46,13 +50,13 @@ const Filter = ({selectedCat, handleFilterCategory, handleSearch }) => {
           Ratings
         </h3>
         <div className="flex flex-col ">
-        {[5, 4, 3, 2, 1].map((rating) => (
+          {[5, 4, 3, 2, 1].map((rating) => (
             <label
-              key={rating}
+              key={`${rating}${clearCount}`}
               className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center"
             >
               <Radio
-                key={rating}
+                key={`${rating}${clearCount}`}
                 name="rating"
                 value={rating}
                 label={rating}
@@ -71,7 +75,7 @@ const Filter = ({selectedCat, handleFilterCategory, handleSearch }) => {
         <div className="flex flex-col ">
         {[25, 20, 15, 10, 5].map((distance) => (
             <label
-              key={distance}
+              key={`${distance}${clearCount}`}
               className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center"
             >
               <Radio
