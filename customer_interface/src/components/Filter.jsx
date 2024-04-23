@@ -1,17 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { Radio, Button } from "@material-tailwind/react";
 
 const Filter = ({ handleSearch }) => {
   const [ratings, setRatings] = useState(1);
   const [distances, setDistances] = useState(10);
-
+  const [clear, setClear] = useState(false)
   const handleFilter = () => {
     // Call the parent component's filter function with the selected ratings and distances
     // onFilter({ ratings, distances });
     handleSearch(ratings, distances);
   };
 
+  const handleClearFilter = () => {
+    setRatings(null); // Clear ratings selection
+    setDistances(null); 
+    handleSearch(0, 100);
+  }
   //   const handleRatingChange = (e) => {
   //     setRatings(e.target.value);
   //     handleSearch(ratings, distances)
@@ -28,6 +33,9 @@ const Filter = ({ handleSearch }) => {
   //     }
   //   };
 
+  useEffect(()=>{
+    handleClearFilter()
+  },[clear])
   return (
     <div className="flex flex-col gap-5 items-center">
       <h2 className="text-2xl">Filter by</h2>
@@ -36,51 +44,21 @@ const Filter = ({ handleSearch }) => {
           Ratings
         </h3>
         <div className="flex flex-col ">
-          <label className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center">
-            <Radio
-              name="rating"
-              value="5"
-              label="5"
-              onClick={(e) => setRatings(e.target.value)}
-            />
-            <FaStar className="text-yellow-300" />
-          </label>
-          <label className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center">
-            <Radio
-              name="rating"
-              value="4"
-              label="4"
-              onClick={(e) => setRatings(e.target.value)}
-            />
-            <FaStar className="text-yellow-300" />
-          </label>
-          <label className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center">
-            <Radio
-              name="rating"
-              value="3"
-              label="3"
-              onClick={(e) => setRatings(e.target.value)}
-            />
-            <FaStar className="text-yellow-300" />
-          </label>
-          <label className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center">
-            <Radio
-              name="rating"
-              value="2"
-              label="2"
-              onClick={(e) => setRatings(e.target.value)}
-            />
-            <FaStar className="text-yellow-300" />
-          </label>
-          <label className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center">
-            <Radio
-              name="rating"
-              value="1"
-              label="1"
-              onClick={(e) => setRatings(e.target.value)}
-            />
-            <FaStar className="text-yellow-300" />
-          </label>
+        {[5, 4, 3, 2, 1].map((rating) => (
+            <label
+              key={rating}
+              className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center"
+            >
+              <Radio
+                name="rating"
+                value={rating}
+                label={rating}
+                // checked={!clear}
+                onClick={(e) => setRatings(e.target.value)}
+              />
+              <FaStar className="text-yellow-300" />
+            </label>
+          ))}
         </div>
       </div>
       <div className="flex flex-col gap-3 items-center">
@@ -88,49 +66,25 @@ const Filter = ({ handleSearch }) => {
           Distances:
         </h3>
         <div className="flex flex-col ">
-          <label className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center">
-            <Radio
-              name="distance"
-              value="25"
-              label="25 km"
-              onClick={(e) => setDistances(e.target.value)}
-            />
-          </label>
-          <label className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center">
-            <Radio
-              name="distance"
-              value="20"
-              label="20 km"
-              onClick={(e) => setDistances(e.target.value)}
-            />
-          </label>
-          <label className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center">
-            <Radio
-              name="distance"
-              value="15"
-              label="15 km"
-              onClick={(e) => setDistances(e.target.value)}
-            />
-          </label>
-          <label className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center">
-            <Radio
-              name="distance"
-              value="10"
-              label="10 km"
-              onClick={(e) => setDistances(e.target.value)}
-            />
-          </label>
-          <label className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center">
-            <Radio
-              name="distance"
-              value="5"
-              label="5 km"
-              onClick={(e) => setDistances(e.target.value)}
-            />
-          </label>
+        {[25, 20, 15, 10, 5].map((distance) => (
+            <label
+              key={distance}
+              className="w-[120px] border-2 flex gap-3 px-3 m-2 rounded-3xl items-center"
+            >
+              <Radio
+                name="distance"
+                value={distance}
+                label={`${distance} km`}
+                // checked={distances === distance}
+                onClick={(e) => setDistances(e.target.value)}
+              />
+            </label>
+          ))}
         </div>
       </div>
       <Button onClick={handleFilter}>Apply Filter</Button>
+      <Button onClick={handleClearFilter}>Clear Filter</Button>
+
     </div>
   );
 };
