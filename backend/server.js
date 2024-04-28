@@ -21,6 +21,29 @@ app.use(bodyParser.urlencoded({
 var imagesDir = path.join(__dirname, 'images');
 app.use(express.static(imagesDir));
 
+// Store all WebSocket clients in an array
+const clients = [];
+wss.on('connection', (ws) => {
+  console.log('Client connected');
+  clients.push(ws);
+ 
+  ws.on('message', (message) => {
+    console.log('Received message:', message);
+    // Parse the received data as a number
+    let data = parseInt(message);
+    if (!isNaN(data)) {
+      ws.id = data;
+      console.log(`WebSocket with ID: ${ws.id} connected`);
+    } else {
+        console.error("Invalid data received: ${message}");   
+    }
+  });
+  
+  // Add other event handlers 
+  ws.on('close', () => {    console.log('Client disconnected');
+    clients.splice(clients.indexOf(ws), 1);  }); 
+}); 
+
 app.post('/api/customer/register', async (req,res) => {
     const body = req.body;
     const customerEmail = body.customerEmail;
@@ -656,8 +679,15 @@ app.post('/api/customer/order/create', async (req, res) => {
         const serviceCustomer = new ServiceCustomer();
         await serviceCustomer.authenticateCustomer(customerEmail, customerPassword);
         const createdOrder = await serviceCustomer.placeCustomerOrder(recipientName, recipientPhone, orderLocation, orderCost);
+        
+        clients.forEach((client) => {
+            if (client.id === createdOrder.restaurantCode && client.readyState === WebSocket.OPEN) {    
+            client.send(JSON.stringify(createdOrder));
+            }
+        });
 
         res.json(createdOrder.orderCode);
+
     } catch (error) {
         res.status(error.status).json({error: error.message});
     }
