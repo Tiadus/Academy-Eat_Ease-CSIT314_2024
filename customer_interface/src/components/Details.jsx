@@ -95,8 +95,7 @@ export function Details() {
 
   //Handle edit Password
   const handleEditPassword = async (newPassword, confirmPassword) => {
-    if (newPassword !== confirmPassword) 
-    return alert("Passwords do not match")
+    if (newPassword !== confirmPassword) return alert("Passwords do not match");
     try {
       const respone = await axios.post(
         "http://localhost:4000/api/customer/edit/password",

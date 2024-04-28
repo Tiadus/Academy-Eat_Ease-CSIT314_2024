@@ -1,13 +1,14 @@
 import "./App.css";
 import SignIn from "./Components/SigninSignup/Signin";
 import SignUp from "./Components/SigninSignup/Signup";
+import { ContextProvider } from "./Context";
 import Dashboard from "./Pages/Dashboard";
 import SigninSignup from "./Pages/SigninSignup";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <>
+    <ContextProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SignIn/>}></Route>
@@ -19,7 +20,7 @@ function App() {
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>
-    </>
+    </ContextProvider>
   );
 }
 

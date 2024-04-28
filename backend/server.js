@@ -859,7 +859,7 @@ app.post('/api/owner/login', async (req, res) => {
         await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
         const restaurantInformation = serviceRestaurant.getRestaurantInformation();
         res.json({restaurantCode: restaurantInformation.restaurantCode});
-    } catch (errorCode) {
+    } catch (error) {
         res.status(error.status).json({error: error.message});
     }
 });
@@ -882,7 +882,7 @@ app.get('/api/owner/information', async (req, res) => {
         await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
         const restaurantInformation = serviceRestaurant.getRestaurantInformation();
         res.json(restaurantInformation);
-    } catch (errorCode) {
+    } catch (error) {
         res.status(error.status).json({error: error.message});
     }
 });
@@ -988,7 +988,7 @@ app.post('/api/owner/edit/name', async (req,res) => {
     const restaurantPassword = authenParts[1];
 
     const newName = req.body.newName;
-
+    console.log(req.body)
     if (newName === undefined) {
         return res.send("Wrong Parameter");
     }

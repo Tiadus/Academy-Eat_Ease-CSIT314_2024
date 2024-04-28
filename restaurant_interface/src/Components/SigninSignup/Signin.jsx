@@ -12,7 +12,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import axios from 'axios';
+import BACKEND_URL from '../../config'
+import { useNavigate } from 'react-router-dom';
+import { useAuthOwner } from '../../Context';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -31,13 +34,46 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate(); 
+  const {isAuthenticated, login, setUser} = useAuthOwner()
+
+  const getOwnerInfo = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/api/owner/information`, {
+        headers: {
+          Authorization: isAuthenticated,
+        },
+      });
+
+      console.log("Owner information: ", response.data);
+      setUser(response.data);
+    } catch (e) {
+      throw new Error(e);
+    }
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    try{
+      const data = new FormData(event.currentTarget);
+      const email= data.get('email');
+      const password= data.get('password');
+      const unEncode = email + ":"+password;
+      const auth = btoa(unEncode);
+      const headers = {
+        authorization: `Basic ${auth}`
+      }; 
+      console.log(headers)
+      const response = await axios.post(`${BACKEND_URL}/api/owner/login`,{},{headers});
+      login(headers.authorization, response.data)
+
+      console.log(response.data);
+      getOwnerInfo()
+      navigate('/dashboard')
+    }catch(err){
+      console.log(err);
+      alert('Wrong email or password')
+    }
   };
 
   return (
