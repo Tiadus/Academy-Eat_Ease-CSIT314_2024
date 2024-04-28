@@ -21,6 +21,7 @@ import DashboardContent from "../Components/Dashboard/DashboardContent";
 import Orders from "../Components/Dashboard/Orders";
 import Profile from "../Components/Profile/Profile";
 import Menu from "../Components/Menu/Menu";
+import OrdersTable from "../Components/Order/OrdersTable";
 function Copyright(props) {
   return (
     <Typography
@@ -109,7 +110,7 @@ export default function Dashboard() {
           componentToRender = <DashboardContent/>;
           break;
       case 'Orders':
-          componentToRender = <Orders/>
+          componentToRender = <OrdersTable/>
           break;
       case 'Menu':
           componentToRender = <Menu/>

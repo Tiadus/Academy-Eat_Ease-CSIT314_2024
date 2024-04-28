@@ -2,6 +2,7 @@ import {
   Button,
   Divider,
   Grid,
+  Paper,
   TextField,
   TextareaAutosize,
   Typography,
@@ -11,7 +12,7 @@ import Title from "../Dashboard/Title";
 
 const Profile = () => {
   return (
-    <div className="">
+    <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
       <Title>Details</Title>
 
       <Grid container spacing={2}>
@@ -76,7 +77,7 @@ const Profile = () => {
             <Button variant="outlined">Save</Button>
           </Grid>
         </Grid>
-        <Grid item xs={6} container spacing={2} >
+        <Grid item xs={6} container spacing={2} marginBottom={2} >
           <Grid item xs={12}>
             <Typography>Password</Typography>
           </Grid>
@@ -91,7 +92,7 @@ const Profile = () => {
             <Button variant="outlined">Save</Button>
           </Grid>
         </Grid>
-        <Grid item xs={6} container spacing={2} >
+        <Grid item xs={6} container spacing={2} marginBottom={2} >
           <Grid item xs={12}>
             <Typography>Confirm password</Typography>
           </Grid>
@@ -108,11 +109,7 @@ const Profile = () => {
         </Grid>
         
       </Grid>
-      <Divider />
-      <Title>Bank Details</Title>
-
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
+        <Grid item xs={12} marginBottom={2}>
           <Typography>Description</Typography>
           <TextField
             id="outlined-multiline-static"
@@ -125,26 +122,42 @@ const Profile = () => {
           />
           <Button variant="outlined">Save</Button>
         </Grid>
-        <Grid item xs={6}>
-          <Typography>ABN</Typography>
-          <TextField
-            id="outlined-basic"
-            value="Restaurant1"
-            variant="outlined"
-          />
-          <Button variant="outlined">Save</Button>
+      <Divider />
+      <Title>Bank Details</Title>
+
+      <Grid container spacing={2}>
+      <Grid item xs={6} container spacing={2} >
+          <Grid item xs={12}>
+            <Typography>ABN</Typography>
+          </Grid>
+          <Grid item xs={12} >
+            <TextField
+              id="outlined-basic"
+              value="Restaurant1"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <Button variant="outlined">Save</Button>
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <Typography>Bank</Typography>
-          <TextField
-            id="outlined-basic"
-            value="Restaurant1"
-            variant="outlined"
-          />
-          <Button variant="outlined">Save</Button>
+        <Grid item xs={6} container spacing={2} >
+          <Grid item xs={12}>
+            <Typography>Bank account</Typography>
+          </Grid>
+          <Grid item xs={12} >
+            <TextField
+              id="outlined-basic"
+              value="Restaurant1"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <Button variant="outlined">Save</Button>
+          </Grid>
         </Grid>
       </Grid>
-    </div>
+    </Paper>
   );
 };
 
