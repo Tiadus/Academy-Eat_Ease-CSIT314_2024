@@ -4,8 +4,13 @@ import Paper from "@mui/material/Paper";
 import Chart from "./Chart";
 import Deposits from "./Deposits";
 import Orders from "./Orders";
-
+import { useAuthOwner } from "../../Context";
+import BACKEND_URL from "../../config";
+import axios from "axios";
+import OrdersTable from "../Order/OrdersTable";
 const DashboardContent = () => {
+  const {isAuthenticated} = useAuthOwner(); 
+  
   return (
     <Grid container spacing={3}>
       {/* Chart */}
@@ -36,9 +41,8 @@ const DashboardContent = () => {
       </Grid>
       {/* Recent Orders */}
       <Grid item xs={12}>
-        <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-          <Orders />
-        </Paper>
+          {/* <Orders /> */}
+          <OrdersTable/>
       </Grid>
     </Grid>
   );

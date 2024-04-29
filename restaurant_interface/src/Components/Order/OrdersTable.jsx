@@ -6,61 +6,96 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "../Dashboard/Title";
-import { Paper } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Paper,
+  Tab,
+  Typography,
+} from "@mui/material";
+import axios from "axios";
+import { useAuthOwner } from "../../Context";
+import BACKEND_URL from "../../config";
+import CancelDialog from "./CancelDialog";
+import ViewDialog from "./ViewDialog";
 
-// Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-const rows = [
-  createData(
-    0,
-    "16 Mar, 2019",
-    "Elvis Presley",
-    "Tupelo, MS",
-    "VISA ⠀•••• 3719",
-    312.44
-  ),
-  createData(
-    1,
-    "16 Mar, 2019",
-    "Paul McCartney",
-    "London, UK",
-    "VISA ⠀•••• 2574",
-    866.99
-  ),
-  createData(
-    2,
-    "16 Mar, 2019",
-    "Tom Scholz",
-    "Boston, MA",
-    "MC ⠀•••• 1253",
-    100.81
-  ),
-  createData(
-    3,
-    "16 Mar, 2019",
-    "Michael Jackson",
-    "Gary, IN",
-    "AMEX ⠀•••• 2000",
-    654.39
-  ),
-  createData(
-    4,
-    "15 Mar, 2019",
-    "Bruce Springsteen",
-    "Long Branch, NJ",
-    "VISA ⠀•••• 5919",
-    212.79
-  ),
-];
 
 function preventDefault(event) {
   event.preventDefault();
 }
 
 export default function OrdersTable() {
+  const { isAuthenticated } = useAuthOwner();
+  const [orders, setOrders] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
+  const getIncomingOrder = async () => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/api/owner/orders/incoming`,
+        {
+          headers: {
+            Authorization: isAuthenticated,
+          },
+      
+        }
+      );
+      setOrders(response.data);
+      console.log(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleApproveOrder = async (oc) => {
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/owner/order/accept`,
+        {
+          oc,
+        },
+        {
+          headers: {
+            Authorization: isAuthenticated,
+          },
+        }
+      );
+      getIncomingOrder();
+      alert(response.data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCancelOrder = async (oc, rejectReason) => {
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/owner/order/reject`,
+        {
+          oc,
+          rejectReason,
+        },
+        {
+          headers: {
+            Authorization: isAuthenticated,
+          },
+        }
+      );
+      getIncomingOrder();
+      alert(response.data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  
+ 
+  React.useEffect(() => {
+    getIncomingOrder();
+  }, []);
   return (
     <React.Fragment>
       <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
@@ -71,18 +106,32 @@ export default function OrdersTable() {
               <TableCell>Date</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Ship To</TableCell>
-              <TableCell>Payment Method</TableCell>
-              <TableCell align="right">Sale Amount</TableCell>
+              <TableCell>Order Code </TableCell>
+              <TableCell>Sale Amount</TableCell>
+              <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.shipTo}</TableCell>
-                <TableCell>{row.paymentMethod}</TableCell>
-                <TableCell align="right">{`$${row.amount}`}</TableCell>
+            {orders.map((order, i) => (
+              <TableRow key={i}>
+                <TableCell>{order.orderDate}</TableCell>
+                <TableCell>{order.recipientName}</TableCell>
+                <TableCell>{order.orderLocation}</TableCell>
+                <TableCell>{order.orderCode}</TableCell>
+                <TableCell>{`$${order.orderCost}`}</TableCell>
+                <TableCell align="center">
+                  <Button onClick={() => handleApproveOrder(order.orderCode)}>
+                    Approve
+                  </Button>
+                  <CancelDialog
+                    handleCancelOrder={handleCancelOrder}
+                    oc={order.orderCode}
+                  />
+                  <ViewDialog
+                  oc={order.orderCode}
+                  refresh={getIncomingOrder}
+                  total={order.orderCost}/>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
