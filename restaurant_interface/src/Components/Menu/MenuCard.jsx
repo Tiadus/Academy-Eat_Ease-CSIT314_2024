@@ -6,27 +6,73 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import image from "../../../public/Images/Thai1.jpg"
-export default function MenuCard() {
+import EditDialog from './EditDialog';
+import axios from "axios"
+import BACKEND_URL from '../../config';
+import { useAuthOwner } from '../../Context';
+export default function MenuCard({resCode, name, desc, price, img, refresh}) {
+  const urlImg = `http://localhost:4000/${img}`
+
+  const {isAuthenticated} = useAuthOwner(); 
+
+  const handleEditItem = async (newItemName, itemDes, itemPrice, oldItemName)=> {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/owner/edit/item`,{
+        newItemName, 
+        itemDes,
+        itemPrice, 
+        oldItemName
+      }, {
+        headers: {
+          Authorization: isAuthenticated
+        }
+      })
+
+      console.log(response.data)
+      refresh()
+    }catch(e){
+      console.log(e.message)
+    }
+
+  }
+  const handleDeleteItem = async (itemName)=> {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/owner/edit/menu/del`, {
+        itemName
+      }, {
+        headers: {
+          Authorization: isAuthenticated
+        }
+      })
+      console.log(response.data);
+      refresh(); 
+    }catch(e){
+      console.log(e)
+    }
+  }
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
-        alt="green iguana"
+        alt="Item image"
         height="140"
-        image={image}
+        src={urlImg} 
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Lizard
+         {name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+          {desc}
+        </Typography>
+        <Typography>
+          {price}$
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Edit</Button>
-        <Button size="small">Delete</Button>
+        {/* <Button size="small">Edit</Button> */}
+        <EditDialog oldName={name} handleEditItem={handleEditItem}/>
+        <Button onClick={()=>handleDeleteItem(name)} size="small">Delete</Button>
       </CardActions>
     </Card>
   );

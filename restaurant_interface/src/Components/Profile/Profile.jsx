@@ -156,6 +156,75 @@ const Profile = () => {
       console.log("Error", e);
     }
   };
+
+  const handleEditDesc = async (newDes) => {
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/owner/edit/description`,
+        {
+          newDes,
+        },
+        {
+          headers: {
+            Authorization: isAuthenticated,
+          },
+        }
+      );
+
+      console.log(response.data);
+      getOwnerInfo();
+      alert(response.data.message);
+    } catch (e) {
+      // alert("Error", e.message);
+      console.log("Error", e);
+    }
+  };
+
+  const handleEditABN = async (newABN) => {
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/owner/edit/abn`,
+        {
+          newABN,
+        },
+        {
+          headers: {
+            Authorization: isAuthenticated,
+          },
+        }
+      );
+
+      console.log(response.data);
+      getOwnerInfo();
+      alert(response.data.message);
+    } catch (e) {
+      // alert("Error", e.message);
+      console.log("Error", e);
+    }
+  };
+
+  const handleEditBanking = async (newBanking) => {
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/owner/edit/banking`,
+        {
+          newBanking,
+        },
+        {
+          headers: {
+            Authorization: isAuthenticated,
+          },
+        }
+      );
+
+      console.log(response.data);
+      getOwnerInfo();
+      alert(response.data.message);
+    } catch (e) {
+      // alert("Error", e.message);
+      console.log("Error", e);
+    }
+  };
   useEffect(() => {
     console.log(user);
     getOwnerInfo();
@@ -277,11 +346,11 @@ const Profile = () => {
           label=""
           multiline
           rows={4}
-          // value="{user.restaurantDescription}"
+          defaultValue={user.restaurantDescription}
           fullWidth
           margin="normal"
         />
-        <Button variant="outlined">Save</Button>
+        <Button onClick={()=>handleEditDesc(description)} variant="outlined">Save</Button>
       </Grid>
       <Divider />
       <Title>Bank Details</Title>
@@ -299,7 +368,7 @@ const Profile = () => {
             />
           </Grid>
           <Grid item xs={2}>
-            <Button variant="outlined">Save</Button>
+            <Button onClick={()=>handleEditABN(abn)} variant="outlined">Save</Button>
           </Grid>
         </Grid>
         <Grid item xs={6} container spacing={2}>
@@ -314,7 +383,7 @@ const Profile = () => {
             />
           </Grid>
           <Grid item xs={2}>
-            <Button variant="outlined">Save</Button>
+            <Button onClick={()=>handleEditBanking(banking)} variant="outlined">Save</Button>
           </Grid>
         </Grid>
       </Grid>
