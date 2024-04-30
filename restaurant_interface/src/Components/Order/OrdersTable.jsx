@@ -32,6 +32,7 @@ export default function OrdersTable() {
   const { isAuthenticated } = useAuthOwner();
   const [orders, setOrders] = React.useState([]);
   const [open, setOpen] = React.useState(false);
+  const [activeOrders, setActiveOrders] = React.useState([]);
   const getIncomingOrder = async () => {
     try {
       const response = await axios.get(
@@ -44,12 +45,29 @@ export default function OrdersTable() {
         }
       );
       setOrders(response.data);
-      console.log(response.data);
+      console.log('incoming Orders: ', response.data);
     } catch (e) {
       console.log(e);
     }
   };
 
+  const getActiveOrder = async () => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/api/owner/orders/active`,
+        {
+          headers: {
+            Authorization: isAuthenticated,
+          },
+      
+        }
+      );
+      setActiveOrders(response.data);
+      console.log('active orders:',response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const handleApproveOrder = async (oc) => {
     try {
       const response = await axios.post(
@@ -64,6 +82,7 @@ export default function OrdersTable() {
         }
       );
       getIncomingOrder();
+      getActiveOrder()
       alert(response.data.message);
     } catch (error) {
       console.log(error);
@@ -95,11 +114,55 @@ export default function OrdersTable() {
  
   React.useEffect(() => {
     getIncomingOrder();
+    getActiveOrder()
   }, []);
   return (
     <React.Fragment>
-      <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-        <Title>Recent Orders</Title>
+      <Paper sx={{ p: 2, margin:2,display: "flex", flexDirection: "column" }}>
+        <Title>Active Orders</Title>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Date</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Ship To</TableCell>
+              <TableCell>Order Code </TableCell>
+              <TableCell>Sale Amount</TableCell>
+              <TableCell align="center">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {activeOrders.map((order, i) => (
+              <TableRow key={i}>
+                <TableCell>{order.orderDate}</TableCell>
+                <TableCell>{order.recipientName}</TableCell>
+                <TableCell>{order.orderLocation}</TableCell>
+                <TableCell>{order.orderCode}</TableCell>
+                <TableCell>{`$${order.orderCost}`}</TableCell>
+                <TableCell align="center">
+                  {/* <Button onClick={() => handleApproveOrder(order.orderCode)}>
+                    Approve
+                  </Button>
+                  <CancelDialog
+                    handleCancelOrder={handleCancelOrder}
+                    oc={order.orderCode}
+                  /> */}
+                  <ViewDialog
+                  oc={order.orderCode}
+                  refresh={getIncomingOrder}
+                  total={order.orderCost}/>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
+          See more orders
+        </Link>
+      </Paper>
+
+      <Paper sx={{ p: 2,margin:2, display: "flex", flexDirection: "column" }}>
+        <Title>Incoming Orders</Title>
         <Table size="small">
           <TableHead>
             <TableRow>

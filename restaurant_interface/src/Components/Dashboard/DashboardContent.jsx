@@ -41,8 +41,8 @@ const DashboardContent = () => {
       </Grid>
       {/* Recent Orders */}
       <Grid item xs={12}>
-          {/* <Orders /> */}
-          <OrdersTable/>
+          <Orders />
+          {/* <OrdersTable/> */}
       </Grid>
     </Grid>
   );

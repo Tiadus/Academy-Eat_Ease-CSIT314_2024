@@ -6,7 +6,11 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
-
+import { Paper } from '@mui/material';
+import { useAuthOwner } from '../../Context';
+import axios from 'axios';
+import BACKEND_URL from '../../config';
+import ViewDialog from '../Order/ViewDialog';
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
   return { id, date, name, shipTo, paymentMethod, amount };
@@ -53,27 +57,59 @@ function preventDefault(event) {
 }
 
 export default function Orders() {
+  const [orders, setOrders] = React.useState([]); 
+  const {isAuthenticated} = useAuthOwner(); 
+
+  const getPastOrders = async()=>{
+    try {
+      const response = await axios.get(`${BACKEND_URL}/api/owner/orders/history`, {
+        headers: {
+          Authorization: isAuthenticated
+        }
+      })
+      setOrders(response.data);
+      console.log('Past orders', response.data)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  React.useEffect(()=>{
+    getPastOrders()
+  },[])
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Paper sx={{ p: 2,display: "flex", flexDirection: "column" }}>
+
+      <Title>Orders History</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+            <TableCell>Rating</TableCell>
+            <TableCell>Review</TableCell>
+            <TableCell>Amount</TableCell>
+            <TableCell>Actions</TableCell>
+
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+          {orders.map((order, i) => (
+            <TableRow key={i}>
+              <TableCell>{order.orderDate}</TableCell>
+              <TableCell>{order.recipientName}</TableCell>
+              <TableCell>{order.orderLocation}</TableCell>
+              <TableCell>{order.orderRating}</TableCell>
+              <TableCell>{order.orderReview}</TableCell>
+              <TableCell>{`$${order.orderCost}`}</TableCell>
+              <TableCell>
+                <ViewDialog
+                oc = {order.orderCode}
+                total= {order.orderCost}/>
+              </TableCell>
+
             </TableRow>
           ))}
         </TableBody>
@@ -81,6 +117,7 @@ export default function Orders() {
       <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
         See more orders
       </Link>
+      </Paper>
     </React.Fragment>
   );
 }

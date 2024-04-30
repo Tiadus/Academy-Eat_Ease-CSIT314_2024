@@ -43,7 +43,7 @@ export default function ViewDialog({ oc, refresh, total }) {
           },
         }
       );
-      console.log(response);
+      console.log('order Details:', response.data);
       setItems(response.data.orderItems);
       refresh();
     } catch (error) {
