@@ -22,17 +22,64 @@ import { useAuthOwner } from "../../Context";
 import BACKEND_URL from "../../config";
 import CancelDialog from "./CancelDialog";
 import ViewDialog from "./ViewDialog";
-
+import { SnackbarProvider, useSnackbar } from "notistack";
+import Snackbar from '@mui/material/Snackbar';
 
 function preventDefault(event) {
   event.preventDefault();
 }
 
 export default function OrdersTable() {
-  const { isAuthenticated } = useAuthOwner();
+  const { isAuthenticated, user } = useAuthOwner();
   const [orders, setOrders] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [activeOrders, setActiveOrders] = React.useState([]);
+  const [messages, setMessages] = React.useState();
+  const [isConnected, setIsConnected] = React.useState(false);
+  // console.log(user.restaurantCode)
+  const [webSocket, setWS] = React.useState(null);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const connectWebSocket = () => {
+    const ws = new WebSocket("ws://localhost:4000");
+
+    ws.onopen = () => {
+      console.log("WebSocket connection opened");
+      ws.send(user.restaurantCode);
+      setIsConnected(true);
+    };
+
+    ws.onmessage = (event) => {
+      const message = event.data;
+      // alert("New order is coming÷, reload to see the latest order");
+      console.log(message);
+      // enqueueSnackbar("New order is coming!");
+      handleClick();
+      getIncomingOrder();
+      setMessages(message);
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket connection closed");
+      setIsConnected(false);
+      setWS(null); // Reset the instance
+    };
+
+    setWS(ws);
+  };
+
   const getIncomingOrder = async () => {
     try {
       const response = await axios.get(
@@ -41,11 +88,10 @@ export default function OrdersTable() {
           headers: {
             Authorization: isAuthenticated,
           },
-      
         }
       );
       setOrders(response.data);
-      console.log('incoming Orders: ', response.data);
+      console.log("incoming Orders: ", response.data);
     } catch (e) {
       console.log(e);
     }
@@ -59,11 +105,10 @@ export default function OrdersTable() {
           headers: {
             Authorization: isAuthenticated,
           },
-      
         }
       );
       setActiveOrders(response.data);
-      console.log('active orders:',response.data);
+      console.log("active orders:", response.data);
     } catch (e) {
       console.log(e);
     }
@@ -82,7 +127,7 @@ export default function OrdersTable() {
         }
       );
       getIncomingOrder();
-      getActiveOrder()
+      getActiveOrder();
       alert(response.data.message);
     } catch (error) {
       console.log(error);
@@ -104,105 +149,129 @@ export default function OrdersTable() {
         }
       );
       getIncomingOrder();
+      // enqueueSnackbar('test', 'success');
       alert(response.data.message);
     } catch (error) {
       console.log(error);
     }
   };
 
-  
- 
   React.useEffect(() => {
+    connectWebSocket();
     getIncomingOrder();
-    getActiveOrder()
+    getActiveOrder();
   }, []);
   return (
-    <React.Fragment>
-      <Paper sx={{ p: 2, margin:2,display: "flex", flexDirection: "column" }}>
-        <Title>Active Orders</Title>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Ship To</TableCell>
-              <TableCell>Order Code </TableCell>
-              <TableCell>Sale Amount</TableCell>
-              <TableCell align="center">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {activeOrders.map((order, i) => (
-              <TableRow key={i}>
-                <TableCell>{order.orderDate}</TableCell>
-                <TableCell>{order.recipientName}</TableCell>
-                <TableCell>{order.orderLocation}</TableCell>
-                <TableCell>{order.orderCode}</TableCell>
-                <TableCell>{`$${order.orderCost}`}</TableCell>
-                <TableCell align="center">
-                  {/* <Button onClick={() => handleApproveOrder(order.orderCode)}>
+    <SnackbarProvider maxSnack={5}>
+      <React.Fragment>
+        <Paper
+          sx={{ p: 2, margin: 2, display: "flex", flexDirection: "column" }}
+        >
+          <Title>Active Orders</Title>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Date</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Ship To</TableCell>
+                <TableCell>Order Code </TableCell>
+                <TableCell>Sale Amount</TableCell>
+                <TableCell align="center">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {activeOrders.map((order, i) => (
+                <TableRow key={i}>
+                  <TableCell>{order.orderDate}</TableCell>
+                  <TableCell>{order.recipientName}</TableCell>
+                  <TableCell>{order.orderLocation}</TableCell>
+                  <TableCell>{order.orderCode}</TableCell>
+                  <TableCell>{`$${order.orderCost}`}</TableCell>
+                  <TableCell align="center">
+                    {/* <Button onClick={() => handleApproveOrder(order.orderCode)}>
                     Approve
-                  </Button>
-                  <CancelDialog
+                    </Button>
+                    <CancelDialog
                     handleCancelOrder={handleCancelOrder}
                     oc={order.orderCode}
                   /> */}
-                  <ViewDialog
-                  oc={order.orderCode}
-                  refresh={getIncomingOrder}
-                  total={order.orderCost}/>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-          See more orders
-        </Link>
-      </Paper>
+                    <ViewDialog
+                      oc={order.orderCode}
+                      refresh={getIncomingOrder}
+                      total={order.orderCost}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Link
+            color="primary"
+            href="#"
+            onClick={preventDefault}
+            sx={{ mt: 3 }}
+          >
+            See more orders
+          </Link>
+        </Paper>
 
-      <Paper sx={{ p: 2,margin:2, display: "flex", flexDirection: "column" }}>
-        <Title>Incoming Orders</Title>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Ship To</TableCell>
-              <TableCell>Order Code </TableCell>
-              <TableCell>Sale Amount</TableCell>
-              <TableCell align="center">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {orders.map((order, i) => (
-              <TableRow key={i}>
-                <TableCell>{order.orderDate}</TableCell>
-                <TableCell>{order.recipientName}</TableCell>
-                <TableCell>{order.orderLocation}</TableCell>
-                <TableCell>{order.orderCode}</TableCell>
-                <TableCell>{`$${order.orderCost}`}</TableCell>
-                <TableCell align="center">
-                  <Button onClick={() => handleApproveOrder(order.orderCode)}>
-                    Approve
-                  </Button>
-                  <CancelDialog
-                    handleCancelOrder={handleCancelOrder}
-                    oc={order.orderCode}
-                  />
-                  <ViewDialog
-                  oc={order.orderCode}
-                  refresh={getIncomingOrder}
-                  total={order.orderCost}/>
-                </TableCell>
+        <Paper
+          sx={{ p: 2, margin: 2, display: "flex", flexDirection: "column" }}
+        >
+          <Title>Incoming Orders</Title>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Date</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Ship To</TableCell>
+                <TableCell>Order Code </TableCell>
+                <TableCell>Sale Amount</TableCell>
+                <TableCell align="center">Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-          See more orders
-        </Link>
-      </Paper>
-    </React.Fragment>
+            </TableHead>
+            <TableBody>
+              {orders.map((order, i) => (
+                <TableRow key={i}>
+                  <TableCell>{order.orderDate}</TableCell>
+                  <TableCell>{order.recipientName}</TableCell>
+                  <TableCell>{order.orderLocation}</TableCell>
+                  <TableCell>{order.orderCode}</TableCell>
+                  <TableCell>{`$${order.orderCost}`}</TableCell>
+                  <TableCell align="center">
+                    <Button onClick={() => handleApproveOrder(order.orderCode)}>
+                      Approve
+                    </Button>
+                    <CancelDialog
+                      handleCancelOrder={handleCancelOrder}
+                      oc={order.orderCode}
+                    />
+                    <ViewDialog
+                      oc={order.orderCode}
+                      refresh={getIncomingOrder}
+                      total={order.orderCost}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Link
+            color="primary"
+            href="#"
+            onClick={handleClick}
+            sx={{ mt: 3 }}
+          >
+            See more orders
+          </Link>
+        </Paper>
+        <Snackbar
+        open={open}
+        autoHideDuration={10000}
+        onClose={handleClose}
+        message="New order is coming "
+      />
+      </React.Fragment>
+    </SnackbarProvider>
   );
 }

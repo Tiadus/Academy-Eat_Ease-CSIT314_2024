@@ -19,9 +19,13 @@ export const ContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [revenue, setRevenue] = useState("")
+  const [revenue, setRevenue] = useState("");
+ 
+
+
   const login = (auth, userData) => {
     console.log(auth);
+    console.log('LOGIN USERDATA', userData)
     setIsAuthenticated(auth);
     setUser(userData);
   };

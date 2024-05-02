@@ -15,12 +15,11 @@ import masterCard from '../assets/Images/mastercard.jpeg'
 import { useAuth } from "../Context";
 import { FaRegTrashAlt } from "react-icons/fa";
 import axios from 'axios'
-
 export function CartDialog({totalCost}) {
     const [open, setOpen] = React.useState(false);
     const { isAuthenticated, user, paymentCards, setPaymentCards } = useAuth();
     const handleOpen = () => setOpen((cur) => !cur);
-
+    const navigate = useNavigate()
     const fetchCards = async () => {
         try {
             const response = await axios.get('http://localhost:4000/api/customer/payment/view', {
