@@ -1049,7 +1049,7 @@ app.post('/api/owner/edit/address', async (req,res) => {
     const newLat = req.body.newLat;
     const newLon = req.body.newLon;
 
-    if (newAddress === undefined && newLat === undefined && newLon === undefined) {
+    if (newAddress === undefined || newLat === undefined || newLon === undefined) {
         return res.send("Wrong Parameter");
     }
 
