@@ -35,7 +35,7 @@ const defaultTheme = createTheme();
 
 export default function SignIn({connectWebSocket}) {
   const navigate = useNavigate(); 
-  const {isAuthenticated, login, setUser} = useAuthOwner()
+  const {isAuthenticated, login, user, setUser} = useAuthOwner()
 
   const getOwnerInfo = async () => {
     try {
@@ -47,11 +47,24 @@ export default function SignIn({connectWebSocket}) {
 
       console.log("Owner information: ", response.data);
       setUser(response.data);
-      connectWebSocket(response.data.restaurantCode)
     } catch (e) {
       throw new Error(e);
     }
   };
+
+  React.useEffect(() => {
+    if (user.restaurantName !== undefined) {
+      connectWebSocket(user.restaurantCode);
+      navigate('/dashboard');
+    }
+  }, [user.isActive])
+
+  React.useEffect(() => {
+    if (user.restaurantCode !== undefined) {
+      console.log("Code " + user.restaurantCode);
+      getOwnerInfo()
+    }
+  }, [user.restaurantCode])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -67,10 +80,8 @@ export default function SignIn({connectWebSocket}) {
       console.log(headers)
       const response = await axios.post(`${BACKEND_URL}/api/owner/login`,{},{headers});
       login(headers.authorization, response.data)
-
+      //navigate('/dashboard')
       console.log(response.data);
-      getOwnerInfo()
-      navigate('/dashboard')
     }catch(err){
       console.log(err);
       alert('Wrong email or password')

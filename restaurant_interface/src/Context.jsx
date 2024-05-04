@@ -17,17 +17,30 @@ export const ContextProvider = ({ children }) => {
 
   const [totalItems, setTotalItems] = useState();
   const [user, setUser] = useState({});
+  const [authUser, setAuthUser] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [revenue, setRevenue] = useState("");
+
+  useEffect(() => {
+    if (authUser !== null) {
+      setIsAuthenticated(authUser.auth);
+    }
+  }, [authUser]);
+
+  useEffect(() => {
+    if (authUser !== null) {
+      setUser(authUser.userData);
+    }
+  }, [isAuthenticated]);
  
-
-
   const login = (auth, userData) => {
     console.log(auth);
-    console.log('LOGIN USERDATA', userData)
-    setIsAuthenticated(auth);
-    setUser(userData);
+    console.log('LOGIN USERDATA', userData);
+    setAuthUser({
+      auth: auth,
+      userData: userData
+    });
   };
 
   //   const updateSub = (member) => {
