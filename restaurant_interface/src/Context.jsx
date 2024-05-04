@@ -5,15 +5,18 @@ const Context = createContext();
 export const useAuthOwner = () => useContext(Context);
 
 export const ContextProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+  /*const [isAuthenticated, setIsAuthenticated] = useState(() => {
     const storedAuthState = localStorage.getItem("isAuthenticated");
     return storedAuthState ? JSON.parse(storedAuthState) : false;
   });
 
   // Save isAuthenticated state to local storage whenever it changes
   useEffect(() => {
+    console.log("gw")
     localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
-  }, [isAuthenticated]);
+  }, [isAuthenticated]);*/
+
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   const [totalItems, setTotalItems] = useState();
   const [user, setUser] = useState({});
@@ -24,12 +27,14 @@ export const ContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser !== null) {
+      console.log("hello")
       setIsAuthenticated(authUser.auth);
     }
   }, [authUser]);
 
   useEffect(() => {
     if (authUser !== null) {
+      console.log(authUser.userData);
       setUser(authUser.userData);
     }
   }, [isAuthenticated]);
