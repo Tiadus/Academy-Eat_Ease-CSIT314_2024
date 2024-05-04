@@ -29,16 +29,11 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function OrdersTable() {
+export default function OrdersTable({incomingCount}) {
   const { isAuthenticated, user } = useAuthOwner();
   const [orders, setOrders] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [activeOrders, setActiveOrders] = React.useState([]);
-  const [messages, setMessages] = React.useState();
-  const [isConnected, setIsConnected] = React.useState(false);
-  // console.log(user.restaurantCode)
-  const [webSocket, setWS] = React.useState(null);
-  const { enqueueSnackbar } = useSnackbar();
 
   const handleClick = () => {
     setOpen(true);
@@ -52,33 +47,9 @@ export default function OrdersTable() {
     setOpen(false);
   };
 
-  const connectWebSocket = () => {
-    const ws = new WebSocket("ws://localhost:4000");
-
-    ws.onopen = () => {
-      console.log("WebSocket connection opened");
-      ws.send(user.restaurantCode);
-      setIsConnected(true);
-    };
-
-    ws.onmessage = (event) => {
-      const message = event.data;
-      // alert("New order is coming÷, reload to see the latest order");
-      console.log(message);
-      // enqueueSnackbar("New order is coming!");
-      handleClick();
-      getIncomingOrder();
-      setMessages(message);
-    };
-
-    ws.onclose = () => {
-      console.log("WebSocket connection closed");
-      setIsConnected(false);
-      setWS(null); // Reset the instance
-    };
-
-    setWS(ws);
-  };
+  React.useEffect(() => {
+    getIncomingOrder();
+  }, [incomingCount])
 
   const getIncomingOrder = async () => {
     try {
@@ -157,12 +128,11 @@ export default function OrdersTable() {
   };
 
   React.useEffect(() => {
-    connectWebSocket();
+    //connectWebSocket();
     getIncomingOrder();
     getActiveOrder();
   }, []);
   return (
-    <SnackbarProvider maxSnack={5}>
       <React.Fragment>
         <Paper
           sx={{ p: 2, margin: 2, display: "flex", flexDirection: "column" }}
@@ -265,13 +235,6 @@ export default function OrdersTable() {
             See more orders
           </Link>
         </Paper>
-        <Snackbar
-        open={open}
-        autoHideDuration={10000}
-        onClose={handleClose}
-        message="New order is coming "
-      />
       </React.Fragment>
-    </SnackbarProvider>
   );
 }

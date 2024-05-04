@@ -33,7 +33,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function SignIn({connectWebSocket}) {
   const navigate = useNavigate(); 
   const {isAuthenticated, login, setUser} = useAuthOwner()
 
@@ -47,6 +47,7 @@ export default function SignIn() {
 
       console.log("Owner information: ", response.data);
       setUser(response.data);
+      connectWebSocket(response.data.restaurantCode)
     } catch (e) {
       throw new Error(e);
     }

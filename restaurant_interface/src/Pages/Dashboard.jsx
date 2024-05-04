@@ -89,7 +89,7 @@ const Drawer = styled(MuiDrawer, {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard() {
+export default function Dashboard({incomingCount}) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -110,7 +110,7 @@ export default function Dashboard() {
           componentToRender = <DashboardContent/>;
           break;
       case 'Orders':
-          componentToRender = <OrdersTable/>
+          componentToRender = <OrdersTable incomingCount={incomingCount}/>
           break;
       case 'Menu':
           componentToRender = <Menu/>
