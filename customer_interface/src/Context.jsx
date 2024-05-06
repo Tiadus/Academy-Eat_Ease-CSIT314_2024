@@ -15,6 +15,8 @@ export const ContextProvider = ({ children }) => {
         localStorage.setItem('isAuthenticated', JSON.stringify(isAuthenticated));
       }, [isAuthenticated]);
 
+    const [searchCount, setSearchCount] = useState(0); //State to keep track of how many time the user click the search button. Used to invoke Home page reload
+
     const [totalItems, setTotalItems] = useState()
     const [user, setUser] = useState({});
     const [paymentCards, setPaymentCards] = useState([])
@@ -32,7 +34,7 @@ export const ContextProvider = ({ children }) => {
         <Context.Provider value={{ isAuthenticated, user, setUser,
                                  login, setIsAuthenticated, 
                                  totalItems, setTotalItems,
-                                 paymentCards, setPaymentCards  }}>
+                                 paymentCards, setPaymentCards, searchCount, setSearchCount  }}>
 
             {children}
         </Context.Provider>
