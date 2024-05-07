@@ -28,9 +28,9 @@ const Home = () => {
   const lon = searchParams.get('lon');
 
   //Use Effect listen to the searchCount to invoke getting restaurant again
-  // useEffect(() => {
-  //   handleSearch()
-  // }, [searchCount])
+  useEffect(() => {
+    handleSearch()
+  }, [searchCount])
 
   const handleSearch = async (rlb, r) => {
     try {
@@ -42,7 +42,7 @@ const Home = () => {
           lat: lat,
           lon: lon
         }
-        
+
       });
       setRestaurants(response.data);
       console.log('kw: ', kw, ' rlb: ', rlb,'r:',r, ' lat: ',lat
@@ -65,12 +65,12 @@ const Home = () => {
   }
 
   // Handle filter category
-  const handleFilterCategory = async (selectedCat,rlb,r) => {
+  const handleFilterCategory = async (selectedCat,lat,lon) => {
     try {
       const response = await axios.get('http://localhost:4000/api/restaurants/' + selectedCat, {
         params: {
-          rlb: rlb,
-          r: r,
+          rlb: undefined,
+          r: undefined,
           lat: lat,
           lon: lon
         }
@@ -88,7 +88,7 @@ const Home = () => {
 
   // useEffect(() => {
   //   fetchCategory()
-  //   handleSearch(0,30)
+  //   handleSearch()
   //   console.log('mounted')
   // }, [])
 
@@ -101,7 +101,7 @@ const Home = () => {
   }, [selectedCat])
   return (
     <div className='flex flex-col items-center w-full'>
-      <NavBar />
+      <NavBar lat = {lat} lon = {lon}/>
       {/* SLIDER or Banner here */}
       <div className='text-3xl my-5'>Category</div>
       <div className='grid grid-cols-5 '>

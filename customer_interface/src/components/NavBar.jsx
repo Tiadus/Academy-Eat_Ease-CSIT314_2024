@@ -7,7 +7,7 @@ import { Badge } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Context";
 import { useNavigate } from "react-router-dom";
-const NavBar = () => {
+const NavBar = ({lat, lon}) => {
   const { totalItems, searchCount, setSearchCount } = useAuth();
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
@@ -17,7 +17,7 @@ const NavBar = () => {
   //Function used to set the new keyword count which invoke home page reload
   const handleKWSearch = () => {
     setSearchCount(prevCount => prevCount+1);
-    navigate(`/home?kw=${keyword}&rlb=3&r=5&lat=-34.408909&lon=150.8854373`);
+    navigate(`/home?kw=${keyword}&rlb=0&r=30&lat=${lat}&lon=${lon}`);
   }
   
   return (
