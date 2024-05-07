@@ -9,6 +9,7 @@ import {
 import { useAuth } from "../Context";
 import axios from 'axios'
 import { useState } from "react";
+import Membership from "./Membership";
 function CheckIcon() {
     return (
         <svg
@@ -30,6 +31,10 @@ function CheckIcon() {
 
 export function PricingCard({ price, type, memberType, membershipEnd, setMembershipType, getCustomerInfo}) {
     let bg_color;
+    const memberShipDate = new Date(membershipEnd)
+    const currentDate = new Date()
+    // console.log(currentDate <memberShipDate  )
+    // console.log(memberShipDate)
     switch (type) {
         case 0:
             bg_color = "gray";
@@ -155,12 +160,12 @@ export function PricingCard({ price, type, memberType, membershipEnd, setMembers
                         <span className="rounded-full border border-white/20 bg-white/20 p-1">
                             <CheckIcon />
                         </span>
-                        {type === memberType?
+                        {type === memberType || currentDate < memberShipDate ?
                         <Typography className="font-normal">
-                            End Date: {membershipEnd}
+                            Current membership date: {membershipEnd}
                         </Typography>:
                         <Typography className="font-normal">
-                            NO End Date yet
+                            No end date yet
                         </Typography> }
                         
                     </li>

@@ -15,6 +15,7 @@ import masterCard from '../assets/Images/mastercard.jpeg'
 import { useAuth } from "../Context";
 import { FaRegTrashAlt } from "react-icons/fa";
 import axios from 'axios'
+import {useNavigate} from "react-router-dom"
 export function CartDialog({totalCost}) {
     const [open, setOpen] = React.useState(false);
     const { isAuthenticated, user, paymentCards, setPaymentCards } = useAuth();

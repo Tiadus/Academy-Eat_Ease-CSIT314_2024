@@ -16,6 +16,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BACKEND_URL from "../../config";
 import { useAuthOwner } from "../../Context";
+import { Autocomplete } from "@mui/material";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 function Copyright(props) {
   return (
@@ -43,7 +46,25 @@ export default function SignUp() {
   const lat = "-34.408909";
   const lon = "150.885437";
   const navigate = useNavigate();
-  const {isAuthenticated} = useAuthOwner()
+  const { isAuthenticated } = useAuthOwner();
+  const [categories, setCategories] = React.useState([]);
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+  const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const [selectedCategory, setSelectedCategory] = React.useState([]);
+  const handleAutoCompleteChange = (e, val) => {
+    setSelectedCategory(val);
+    // console.log(selectedCategory);
+  };
+  const fetchCategory = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/api/categories`, {});
+
+      console.log(response.data);
+      setCategories(response.data);
+    } catch (error) {
+      throw error;
+    }
+  };
   const handleRegister = async (
     name,
     email,
@@ -53,14 +74,15 @@ export default function SignUp() {
     banking,
     location,
     lat,
-    lon, 
+    lon,
     categories,
     password
   ) => {
     try {
       const response = await axios.post(
         `${BACKEND_URL}/api/owner/register`,
-        {name,
+        {
+          name,
           email,
           phone,
           des,
@@ -68,17 +90,19 @@ export default function SignUp() {
           banking,
           location,
           lat,
-          lon, 
+          lon,
           categories,
-          password},
+          password,
+        },
         {
           headers: {
-            Authorization: isAuthenticated
-          }
+            Authorization: isAuthenticated,
+          },
         }
       );
 
-      console.log(response.data)
+      console.log(response.data);
+      alert("create successful");
     } catch (error) {
       console.error(error);
     }
@@ -87,27 +111,51 @@ export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const name = data.get('name'); 
-    const email = data.get('email');
-    const phone = data.get('phone'); 
-    const des = data.get('description');
-    const abn = data.get('abn');
-    const banking = data.get('banking');
-    const location = data.get('location');
-    const categories = data.get('categories');
-    const password = data.get('password');
+    const name = data.get("name");
+    const email = data.get("email");
+    const phone = data.get("phone");
+    const des = data.get("description");
+    const abn = data.get("abn");
+    const banking = data.get("banking");
+    const location = data.get("location");
+    const categories = selectedCategory
+      .map((option) => option.categoryCode)
+      .toString();
+    const password = data.get("password");
 
-    console.log(name, email, phone, des,abn, banking,location,
-      lat,lon,
-      categories, password)
-    handleRegister(name, email, phone, des,abn, banking,location,
-                  lat,lon,
-                  categories, password
-                )
-    alert("create successful");
+    console.log(
+      name,
+      email,
+      phone,
+      des,
+      abn,
+      banking,
+      location,
+      lat,
+      lon,
+      "categories:",
+      categories,
+      password
+    );
+    handleRegister(
+      name,
+      email,
+      phone,
+      des,
+      abn,
+      banking,
+      location,
+      lat,
+      lon,
+      categories,
+      password
+    );
     navigate("/");
   };
 
+  React.useEffect(() => {
+    fetchCategory();
+  }, []);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -197,12 +245,32 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Categories"
+                <Autocomplete
                   name="categories"
-                  autoComplete="family-name"
+                  multiple
+                  options={categories}
+                  disableCloseOnSelect
+                  getOptionLabel={(option) => option.categoryName}
+                  renderOption={(props, option, { selected }) => (
+                    <li {...props} key={option.categoryCode}  >
+                      <Checkbox
+                        icon={icon}
+                        checkedIcon={checkedIcon}
+                        style={{ marginRight: 8 }}
+                        checked={selected}
+                      />
+                      {option.categoryName}
+                    </li>
+                  )}
+                  onChange={handleAutoCompleteChange}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Categories"
+                      placeholder="Categories"
+                    />
+                  )}
+                  style={{ width: 500 }}
                 />
               </Grid>
               <Grid item xs={12}>
