@@ -43,8 +43,8 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const lat = "-34.408909";
-  const lon = "150.885437";
+  // const lat = "-34.408909";
+  // const lon = "150.885437";
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthOwner();
   const [categories, setCategories] = React.useState([]);
@@ -108,7 +108,7 @@ export default function SignUp() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const name = data.get("name");
@@ -118,11 +118,26 @@ export default function SignUp() {
     const abn = data.get("abn");
     const banking = data.get("banking");
     const location = data.get("location");
+    var lat, lon;
     const categories = selectedCategory
       .map((option) => option.categoryCode)
       .toString();
     const password = data.get("password");
 
+    try {
+      const response = await axios.get('https://nominatim.openstreetmap.org/search', {
+        params: {
+          q:location, 
+          format: 'json',
+          limit:1
+        }
+      });
+       lat = response.data[0].lat;
+       lon = response.data[0].lon; 
+
+    } catch (error) {
+      throw new Error(error);
+    }
     console.log(
       name,
       email,

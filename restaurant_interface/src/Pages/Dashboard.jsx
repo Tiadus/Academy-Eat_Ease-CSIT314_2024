@@ -120,7 +120,6 @@ export default function Dashboard({incomingCount}) {
           componentToRender = <Profile />;
           break;
 
-
       default:
           componentToRender = <DashboardContent />;
   }

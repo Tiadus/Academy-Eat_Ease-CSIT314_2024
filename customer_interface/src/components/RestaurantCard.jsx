@@ -10,7 +10,7 @@ const RestaurantCard = ({name, code, desc, rating, restaurantCode, location, img
         navigate(`/menu?name=${name}`)
     }
     const restaurantIMG = 'http://localhost:4000/' + img;
-    console.log(restaurantIMG);
+    // console.log(restaurantIMG);
     return (
         <div onClick={handleOnClick} className='grid grid-cols-5  items-center bg-gray-300 rounded-lg'>
             <img className='w-[150px] h-[150px] col-start-1 col-span-1' src={restaurantIMG} alt="" />

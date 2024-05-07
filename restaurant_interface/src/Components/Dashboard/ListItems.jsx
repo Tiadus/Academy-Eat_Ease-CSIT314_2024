@@ -8,8 +8,10 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useNavigate } from "react-router-dom";
 const ListItems = ({onOptionClick}) => {
+  const navigate = useNavigate()
   return (
     <React.Fragment>
     <ListItemButton onClick={()=>onOptionClick('Dashboard')}>
@@ -36,6 +38,12 @@ const ListItems = ({onOptionClick}) => {
         <AccountBoxIcon />
       </ListItemIcon>
       <ListItemText primary="Profile" />
+    </ListItemButton>
+    <ListItemButton onClick={()=>navigate('/signup')}>
+      <ListItemIcon>
+        <LogoutIcon />
+      </ListItemIcon>
+      <ListItemText primary="Log out" />
     </ListItemButton>
   </React.Fragment>  )
 }
