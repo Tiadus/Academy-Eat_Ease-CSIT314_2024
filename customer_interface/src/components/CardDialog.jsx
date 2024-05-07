@@ -18,8 +18,9 @@ import axios from 'axios'
 import {useNavigate} from "react-router-dom"
 export function CartDialog({totalCost}) {
     const [open, setOpen] = React.useState(false);
-    const { isAuthenticated, user, paymentCards, setPaymentCards } = useAuth();
+    const { isAuthenticated, user, paymentCards, setPaymentCards, setTotalItems } = useAuth();
     const handleOpen = () => setOpen((cur) => !cur);
+    const navigate = useNavigate()
     const fetchCards = async () => {
         try {
             const response = await axios.get('http://localhost:4000/api/customer/payment/view', {
@@ -51,6 +52,8 @@ export function CartDialog({totalCost}) {
             //orderCode 
             console.log(response)
             alert("Order created successfully")
+            setTotalItems(0)
+            navigate('/page')
             return response.data;
         }catch(e){
             throw new Error(e)

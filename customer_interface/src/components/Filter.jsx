@@ -20,7 +20,7 @@ const Filter = ({selectedCat, handleFilterCategory, handleSearch }) => {
     setDistances(null); 
     const newClear = clearCount + 1;
     setClearCount(newClear);
-    handleSearch(0, 100);
+    handleSearch(undefined, undefined);
   }
   //   const handleRatingChange = (e) => {
   //     setRatings(e.target.value);

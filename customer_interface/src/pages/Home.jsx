@@ -16,9 +16,9 @@ const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCat, setSelectedCat] = useState('');
-  const location = useLocation(); // Initialize useLocation hook
+  // const location = useLocation(); // Initialize useLocation hook
   const searchParams = new URLSearchParams(location.search); // Get search parameters from URL
-  const { isAuthenticated, user, paymentCards, setPaymentCards, searchCount } = useAuth();
+  const { isAuthenticated, searchCount } = useAuth();
 
   // Extract parameters from URL
   const kw = searchParams.get('kw');
@@ -28,9 +28,9 @@ const Home = () => {
   const lon = searchParams.get('lon');
 
   //Use Effect listen to the searchCount to invoke getting restaurant again
-  useEffect(() => {
-    handleSearch()
-  }, [searchCount])
+  // useEffect(() => {
+  //   handleSearch()
+  // }, [searchCount])
 
   const handleSearch = async (rlb, r) => {
     try {
@@ -42,9 +42,12 @@ const Home = () => {
           lat: lat,
           lon: lon
         }
+        
       });
       setRestaurants(response.data);
-      // console.log(response.data);
+      console.log('kw: ', kw, ' rlb: ', rlb,'r:',r, ' lat: ',lat
+                  , 'lon: ', lon)
+      console.log(response.data);
     } catch (error) {
       console.error('Error fetching restaurants:', error);
     }
@@ -83,13 +86,14 @@ const Home = () => {
     }
   }
 
-  useEffect(() => {
-    fetchCategory()
-    handleSearch()
-    console.log('mounted')
-  }, [])
+  // useEffect(() => {
+  //   fetchCategory()
+  //   handleSearch(0,30)
+  //   console.log('mounted')
+  // }, [])
 
   useEffect(() => {
+    fetchCategory()
     console.log(selectedCat)
     selectedCat===''?handleSearch() : handleFilterCategory(selectedCat ,lat, lon);
      

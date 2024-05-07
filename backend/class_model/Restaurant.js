@@ -358,13 +358,13 @@ class Restaurant {
     static async getRestaurantByKeyword(keyword, ratingLowerBound) {
         const {pool} = require('../Database.js');
         try {
-            let sql1 = 'SELECT restaurantCode, restaurantName, restaurantDescription, restaurantIMG, restaurantLocation, restaurantLat, restaurantLon, NULLIF(ROUND((restaurantTotalRating / NULLIF(restaurantTotalOrder, 0)), 2), 0) AS rating '
+            let sql1 = 'SELECT restaurantCode, restaurantName, restaurantDescription, restaurantIMG, restaurantLocation, restaurantLat, restaurantLon, COALESCE(NULLIF(ROUND((restaurantTotalRating / NULLIF(restaurantTotalOrder, 0)), 2), 0), 1) AS rating '
             let sql2 = 'FROM RESTAURANT WHERE isActive = true AND restaurantName LIKE ?';
             let sql = sql1 + sql2;
             let sqlValue = [`%${keyword}%`];
 
             if (ratingLowerBound !== undefined) {
-                sql += ' AND (restaurantTotalRating / NULLIF(restaurantTotalOrder, 0)) >= ?';
+                sql += ' AND COALESCE(NULLIF(ROUND((restaurantTotalRating / NULLIF(restaurantTotalOrder, 0)), 2), 0), 1) >= ?';
                 sqlValue.push(ratingLowerBound);
             }
 
@@ -383,7 +383,7 @@ class Restaurant {
     static async getRestaurantByCategory(category, ratingLowerBound) {
         const {pool} = require('../Database.js');
         try {
-            let sql1 = 'SELECT RESTAURANT.restaurantCode, RESTAURANT.restaurantName, RESTAURANT.restaurantDescription, RESTAURANT.restaurantIMG, RESTAURANT.restaurantLocation, RESTAURANT.restaurantLat, RESTAURANT.restaurantLon, NULLIF(ROUND((restaurantTotalRating / NULLIF(restaurantTotalOrder, 0)), 2), 0) AS rating ';
+            let sql1 = 'SELECT RESTAURANT.restaurantCode, RESTAURANT.restaurantName, RESTAURANT.restaurantDescription, RESTAURANT.restaurantIMG, RESTAURANT.restaurantLocation, RESTAURANT.restaurantLat, RESTAURANT.restaurantLon, COALESCE(NULLIF(ROUND((restaurantTotalRating / NULLIF(restaurantTotalOrder, 0)), 2), 0), 1) AS rating ';
             let sql2 = 'FROM CATEGORY ';
             let sql3 = 'JOIN CATEGORY_RESTAURANT ON CATEGORY.categoryCode = CATEGORY_RESTAURANT.categoryCode '
             let sql4 = 'JOIN RESTAURANT ON CATEGORY_RESTAURANT.restaurantCode = RESTAURANT.restaurantCode '
@@ -393,7 +393,7 @@ class Restaurant {
             let sqlValue = [category];
 
             if (ratingLowerBound !== undefined) {
-                sql += ' AND (restaurantTotalRating / NULLIF(restaurantTotalOrder, 0)) > ?';
+                sql += ' AND COALESCE(NULLIF(ROUND((restaurantTotalRating / NULLIF(restaurantTotalOrder, 0)), 2), 0), 1) > ?';
                 sqlValue.push(ratingLowerBound);
             }
 
