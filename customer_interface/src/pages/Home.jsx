@@ -8,6 +8,8 @@ import axios from 'axios'; // Import axios
 import { CategoryCard } from '../components/CategoryCard';
 import NavBar from '../components/NavBar';
 
+import { useAuth } from "../Context";
+
 const Home = () => {
 
 
@@ -16,6 +18,7 @@ const Home = () => {
   const [selectedCat, setSelectedCat] = useState('');
   const location = useLocation(); // Initialize useLocation hook
   const searchParams = new URLSearchParams(location.search); // Get search parameters from URL
+  const { isAuthenticated, user, paymentCards, setPaymentCards, searchCount } = useAuth();
 
   // Extract parameters from URL
   const kw = searchParams.get('kw');
@@ -23,6 +26,11 @@ const Home = () => {
   // const r = searchParams.get('r');
   const lat = searchParams.get('lat');
   const lon = searchParams.get('lon');
+
+  //Use Effect listen to the searchCount to invoke getting restaurant again
+  useEffect(() => {
+    handleSearch()
+  }, [searchCount])
 
   const handleSearch = async (rlb, r) => {
     try {

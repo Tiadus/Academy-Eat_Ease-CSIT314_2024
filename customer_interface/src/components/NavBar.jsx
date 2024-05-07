@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import eatEaseLogo from "../assets/Images/EatEase.png";
 import { FaCartShopping } from "react-icons/fa6";
 import { CgProfile } from "react-icons/cg";
@@ -8,11 +8,17 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../Context";
 import { useNavigate } from "react-router-dom";
 const NavBar = () => {
-  const { totalItems } = useAuth();
+  const { totalItems, searchCount, setSearchCount } = useAuth();
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
   const onChange = ({ target }) => setKeyword(target.value);
   console.log("TotalItems: ", totalItems);
+
+  //Function used to set the new keyword count which invoke home page reload
+  const handleKWSearch = () => {
+    setSearchCount(prevCount => prevCount+1);
+    navigate(`/home?kw=${keyword}&rlb=3&r=5&lat=-34.408909&lon=150.8854373`);
+  }
   
   return (
     <div className="grid grid-cols-10 bg-eatEase w-full">
@@ -38,11 +44,9 @@ const NavBar = () => {
           value={keyword}
           onChange={onChange}
         />
-        <a href={`/home?kw=${keyword}&rlb=3&r=5&lat=-34.408909&lon=150.8854373`}>
-          <FaSearch
-            className="text-4xl"
-          />
-        </a>
+        <FaSearch onClick={handleKWSearch}
+          className="text-4xl"
+        />
       </div>
       <div className="flex  col-start-9 col-span-2 items-center">
         <Badge
