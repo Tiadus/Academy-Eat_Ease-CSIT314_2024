@@ -66,7 +66,7 @@ class ServiceRestaurant {
             restaurantCode: this.aRestaurant.restaurantCode,
             restaurantName: this.aRestaurant.restaurantName,
             restaurantDescription: this.aRestaurant.restaurantDescription,
-            restaurantPhone: this.aRestaurant.restaurantLocation,
+            restaurantPhone: this.aRestaurant.restaurantPhone,
             restaurantLocation: this.aRestaurant.restaurantLocation,
             restaurantLat: this.aRestaurant.restaurantLat,
             restaurantLon: this.aRestaurant.restaurantLon,
