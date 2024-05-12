@@ -62,7 +62,7 @@ function App() {
       <BrowserRouter>
       <SnackbarProvider maxSnack={5}>
         <Routes>
-          <Route path="/" element={<SignIn connectWebSocket={connectWebSocket}/>}></Route>
+          <Route path="/" element={<SignIn webSocket={webSocket} connectWebSocket={connectWebSocket}/>}></Route>
           <Route path="/Dashboard" element={<Dashboard incomingCount={incomingCount}/>}></Route>
           <Route path="/Signup" element={<SignUp />}></Route>
           {/* <Route path="/profile" element={<Profile />}></Route>

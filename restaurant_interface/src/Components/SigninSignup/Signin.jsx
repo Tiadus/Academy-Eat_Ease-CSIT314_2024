@@ -33,7 +33,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignIn({connectWebSocket}) {
+export default function SignIn({webSocket, connectWebSocket}) {
   const navigate = useNavigate(); 
   const {isAuthenticated, login, user, setUser} = useAuthOwner()
 
@@ -65,6 +65,15 @@ export default function SignIn({connectWebSocket}) {
       getOwnerInfo()
     }
   }, [user.restaurantCode])
+
+  React.useEffect(() => {
+    //When logout, the app will be navigated to SignIn page where it checks if the websocket connection is active and close it if applicable.
+    if (webSocket !== null) {
+      if (user.restaurantCode === undefined) {
+        webSocket.close();
+      }
+    }
+  }, [user]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

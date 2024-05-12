@@ -10,8 +10,18 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router-dom";
+import { useAuthOwner } from "../../Context";
 const ListItems = ({onOptionClick}) => {
   const navigate = useNavigate()
+  const {user, setAuthUser} = useAuthOwner()
+
+  //When the user is logout, meaning their detail is cleared, this navigate the user to the SignIn page.
+  React.useEffect(() => {
+    if (user.restaurantCode === undefined) {
+      navigate('/');
+    }
+  }, [user])
+
   return (
     <React.Fragment>
     <ListItemButton onClick={()=>onOptionClick('Dashboard')}>
@@ -39,7 +49,13 @@ const ListItems = ({onOptionClick}) => {
       </ListItemIcon>
       <ListItemText primary="Profile" />
     </ListItemButton>
-    <ListItemButton onClick={()=>navigate('/signup')}>
+    <ListItemButton onClick={()=>{
+      //Clearing the detail and credential of user
+          setAuthUser({
+            auth: null,
+            userData: {}
+          });
+      }}>
       <ListItemIcon>
         <LogoutIcon />
       </ListItemIcon>

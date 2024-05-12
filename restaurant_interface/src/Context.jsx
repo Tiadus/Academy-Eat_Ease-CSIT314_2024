@@ -64,7 +64,8 @@ export const ContextProvider = ({ children }) => {
         setTotalItems,
         startDate, setStartDate,
         endDate, setEndDate, 
-        revenue, setRevenue
+        revenue, setRevenue,
+        setAuthUser //setAuthUser to clear data of the user quickly
       }}
     >
       {children}
