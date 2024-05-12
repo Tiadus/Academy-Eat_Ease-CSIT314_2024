@@ -54,7 +54,7 @@ class ServiceRestaurant {
     }
 
     getRestaurantPublicInformation() {
-        let restaurantRating = 0;
+        let restaurantRating = (1).toFixed(2);
         const restaurantTotalRating = parseInt(this.aRestaurant.restaurantTotalRating);
         const restaurantTotalOrder = parseInt(this.aRestaurant.restaurantTotalOrder);
 
