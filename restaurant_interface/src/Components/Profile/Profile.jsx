@@ -12,8 +12,9 @@ import Title from "../Dashboard/Title";
 import { useAuthOwner } from "../../Context";
 import BACKEND_URL from "../../config";
 import axios from "axios";
+
 const Profile = () => {
-  const { isAuthenticated, user, setUser } = useAuthOwner();
+  const { isAuthenticated, user, setUser, setAuthUser } = useAuthOwner();
   const [name, setResName] = useState("");
   const [phone, setResPhone] = useState("");
   const [address, setResAddress] = useState("");
@@ -100,7 +101,12 @@ const Profile = () => {
       );
 
       console.log(response.data);
-      getOwnerInfo();
+
+      //Logout the user when success
+      setAuthUser({
+        auth: null,
+        userData: {}
+      });
       alert(response.data.message);
     } catch (e) {
       // alert("Error", e.message);
@@ -149,7 +155,12 @@ const Profile = () => {
       );
 
       console.log(response.data);
-      getOwnerInfo();
+
+      //Logout the user when success
+      setAuthUser({
+        auth: null,
+        userData: {}
+      });
       alert(response.data.message);
     } catch (e) {
       // alert("Error", e.message);
