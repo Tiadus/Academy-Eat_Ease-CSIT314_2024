@@ -18,7 +18,7 @@ import axios from 'axios'
 import {useNavigate} from "react-router-dom"
 export function CartDialog({totalCost}) {
     const [open, setOpen] = React.useState(false);
-    const { isAuthenticated, user, paymentCards, setPaymentCards, setTotalItems } = useAuth();
+    const { isAuthenticated, user, paymentCards, setPaymentCards, setTotalItems, location } = useAuth();
     const handleOpen = () => setOpen((cur) => !cur);
     const navigate = useNavigate()
     const fetchCards = async () => {
@@ -36,7 +36,7 @@ export function CartDialog({totalCost}) {
     }
 
     //Handle create new Order
-    const handleCreateOrder = async (name, phone, location, totalCost) => {
+    const handleCreateOrder = async (name, phone, location) => {
         try{
             const response = await axios.post('http://localhost:4000/api/customer/order/create',{
                 recipientName :name,
@@ -125,7 +125,7 @@ export function CartDialog({totalCost}) {
                             {paymentCards.map((card, index) => (
                                 <MenuItem key={index} 
                                         className="mb-4 flex items-center justify-center gap-3 !py-4 shadow-md"
-                                        onClick={()=>handleCreateOrder(user.customerName,'012345678', 'UOW',totalCost)}>
+                                        onClick={()=>handleCreateOrder(user.customerName,user.customerPhone, location)}>
                                     <img
                                         src={masterCard}
                                         alt="metamast"
@@ -149,10 +149,12 @@ export function CartDialog({totalCost}) {
                             color="blue-gray"
                             className="py-4 font-semibold uppercase opacity-70"
                         >
-                            Add a new card
+                            One time payment card
                         </Typography>
                         <ul className="mt-4 -ml-2.5 flex flex-col gap-1">
-                            <NewCardInfo />
+                            <NewCardInfo fetchCards= {fetchCards}
+                                         handleCreateOrder={handleCreateOrder} 
+                                         OTP = {true}/>
                         </ul>
                     </div>
                 </DialogBody>

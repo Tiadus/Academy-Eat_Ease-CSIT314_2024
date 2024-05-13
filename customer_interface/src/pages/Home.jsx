@@ -18,15 +18,18 @@ const Home = () => {
   const [selectedCat, setSelectedCat] = useState('');
   // const location = useLocation(); // Initialize useLocation hook
   const searchParams = new URLSearchParams(location.search); // Get search parameters from URL
-  const { isAuthenticated, searchCount } = useAuth();
+  const { isAuthenticated, searchCount,setLat, setLon, lat, lon, setLocation } = useAuth();
 
   // Extract parameters from URL
   const kw = searchParams.get('kw');
   // const rlb = searchParams.get('rlb');
-  const lat = searchParams.get('lat');
-  const lon = searchParams.get('lon');
-  const address = searchParams.get('address');
+  // const lat = searchParams.get('lat');
+  // const lon = searchParams.get('lon');
+  setLat(searchParams.get('lat'));
+  setLon(searchParams.get('lon'));
 
+  const address = searchParams.get('address');
+  setLocation(address);
   //Use Effect listen to the searchCount to invoke getting restaurant again
   useEffect(() => {
     handleSearch()

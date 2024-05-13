@@ -12,7 +12,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   const handleSearch = () => {
-    navigate(`/home?kw=${address}&lat=-34.408909&lon=150.8854373&address= University of Wollongong, NSW, 2522, Australia. `);
+    navigate(`/home?kw=&lat=-34.408909&lon=150.8854373&address= University of Wollongong, NSW, 2522, Australia. `);
   };
 
   const handleSearchAddress = async (address) => {

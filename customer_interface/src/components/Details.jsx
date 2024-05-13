@@ -8,7 +8,7 @@ import {
 import axios from "axios";
 import { useAuth } from "../Context";
 import { useEffect, useState } from "react";
-
+import {useNavigate} from 'react-router-dom'
 export function Details() {
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -16,6 +16,7 @@ export function Details() {
   const [newPhone, setNewPhone] = useState("");
   const [newName, setNewName] = useState("");
   const { isAuthenticated, user, setUser } = useAuth();
+  const navigate = useNavigate()
   const getCustomerInfo = async () => {
     try {
       const response = await axios.get(
@@ -49,7 +50,8 @@ export function Details() {
         }
       );
 
-      alert(respone.data.message);
+      alert("Edit email successfully. you will be logged out now.");
+      navigate('/')
     } catch (e) {
       throw new Error(e);
     }
@@ -109,7 +111,8 @@ export function Details() {
         }
       );
 
-      alert(respone.data.message);
+      alert("Edit password successfully, you will be logged out now.");
+      navigate('/')
     } catch (e) {
       throw new Error(e);
     }

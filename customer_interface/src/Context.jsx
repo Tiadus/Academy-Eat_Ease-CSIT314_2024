@@ -20,6 +20,9 @@ export const ContextProvider = ({ children }) => {
     const [totalItems, setTotalItems] = useState()
     const [user, setUser] = useState({});
     const [paymentCards, setPaymentCards] = useState([])
+    const [lat, setLat] = useState(); 
+    const [lon,setLon]= useState();
+    const [location, setLocation] = useState()
     const login = (auth, userData) => {
         console.log(auth)
         setIsAuthenticated(auth);
@@ -34,7 +37,8 @@ export const ContextProvider = ({ children }) => {
         <Context.Provider value={{ isAuthenticated, user, setUser,
                                  login, setIsAuthenticated, 
                                  totalItems, setTotalItems,
-                                 paymentCards, setPaymentCards, searchCount, setSearchCount  }}>
+                                 paymentCards, setPaymentCards, searchCount, setSearchCount ,
+                                 lat, setLat, lon, setLon ,location, setLocation}}>
 
             {children}
         </Context.Provider>
