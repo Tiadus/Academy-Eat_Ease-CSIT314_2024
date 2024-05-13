@@ -105,7 +105,7 @@ const Profile = () => {
       //Logout the user when success
       setAuthUser({
         auth: null,
-        userData: {}
+        userData: {},
       });
       alert(response.data.message);
     } catch (e) {
@@ -117,10 +117,26 @@ const Profile = () => {
   //   NEED lat lon for this
   const handleEditAddress = async (newAddress) => {
     try {
+      const getLatLon = await axios.get(
+        "https://nominatim.openstreetmap.org/search",
+        {
+          params: {
+            q: newAddress,
+            format: "json",
+            limit: 1,
+          },
+        }
+      );
+      const newLat = getLatLon.data[0].lat;
+      const newLon = getLatLon.data[0].lon;
+
+      console.log('New address: ', newAddress, newLat, newLon);
       const response = await axios.post(
         `${BACKEND_URL}/api/owner/edit/address`,
         {
           newAddress,
+          newLat,
+          newLon,
         },
         {
           headers: {
@@ -134,7 +150,7 @@ const Profile = () => {
       alert(response.data.message);
     } catch (e) {
       // alert("Error", e.message);
-      console.log("Error", e);
+      throw new Error(e)
     }
   };
   const handleEditPassword = async (newPassword, confirmPassWord) => {
@@ -159,7 +175,7 @@ const Profile = () => {
       //Logout the user when success
       setAuthUser({
         auth: null,
-        userData: {}
+        userData: {},
       });
       alert(response.data.message);
     } catch (e) {
@@ -346,7 +362,12 @@ const Profile = () => {
           </Grid>
         </Grid>
         <Grid item xs={12} marginBottom={2}>
-          <Button onClick={()=>handleEditPassword(currPassWord, confirmPassWord)} variant="outlined">Save</Button>
+          <Button
+            onClick={() => handleEditPassword(currPassWord, confirmPassWord)}
+            variant="outlined"
+          >
+            Save
+          </Button>
         </Grid>
       </Grid>
       <Grid item xs={12} marginBottom={2}>
@@ -361,7 +382,9 @@ const Profile = () => {
           fullWidth
           margin="normal"
         />
-        <Button onClick={()=>handleEditDesc(description)} variant="outlined">Save</Button>
+        <Button onClick={() => handleEditDesc(description)} variant="outlined">
+          Save
+        </Button>
       </Grid>
       <Divider />
       <Title>Bank Details</Title>
@@ -379,7 +402,9 @@ const Profile = () => {
             />
           </Grid>
           <Grid item xs={2}>
-            <Button onClick={()=>handleEditABN(abn)} variant="outlined">Save</Button>
+            <Button onClick={() => handleEditABN(abn)} variant="outlined">
+              Save
+            </Button>
           </Grid>
         </Grid>
         <Grid item xs={6} container spacing={2}>
@@ -394,7 +419,12 @@ const Profile = () => {
             />
           </Grid>
           <Grid item xs={2}>
-            <Button onClick={()=>handleEditBanking(banking)} variant="outlined">Save</Button>
+            <Button
+              onClick={() => handleEditBanking(banking)}
+              variant="outlined"
+            >
+              Save
+            </Button>
           </Grid>
         </Grid>
       </Grid>
