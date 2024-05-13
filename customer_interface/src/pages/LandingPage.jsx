@@ -12,7 +12,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   const handleSearch = () => {
-    navigate(`/home?kw=${address}&lat=-34.408909&lon=150.8854373`);
+    navigate(`/home?kw=${address}&lat=-34.408909&lon=150.8854373&address= University of Wollongong, NSW, 2522, Australia. `);
   };
 
   const handleSearchAddress = async (address) => {
@@ -33,7 +33,7 @@ const LandingPage = () => {
       console.log(response.data);
       console.log(displayAddress, lat, lon);
 
-      navigate(`/home?kw=&lat=${lat}&lon=${lon}`);
+      navigate(`/home?kw=&lat=${lat}&lon=${lon}&address=${displayAddress}`);
       return response.data;
     } catch (err) {
       throw err;

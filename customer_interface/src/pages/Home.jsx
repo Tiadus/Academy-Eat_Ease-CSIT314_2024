@@ -23,9 +23,9 @@ const Home = () => {
   // Extract parameters from URL
   const kw = searchParams.get('kw');
   // const rlb = searchParams.get('rlb');
-  // const r = searchParams.get('r');
   const lat = searchParams.get('lat');
   const lon = searchParams.get('lon');
+  const address = searchParams.get('address');
 
   //Use Effect listen to the searchCount to invoke getting restaurant again
   useEffect(() => {
@@ -119,7 +119,8 @@ const Home = () => {
 
       {/* Current address */}
       <div className='flex bg-gray-400 w-[500px] h-[100px] rounded-lg  items-center justify-center mb-10' >
-        University of Wollongong, NSW, 2522, Australia.   <LuMapPin className='h-[25px] w-[25px]' />
+        {address}
+        <LuMapPin className='h-[25px] w-[25px]' />
 
       </div>
 
