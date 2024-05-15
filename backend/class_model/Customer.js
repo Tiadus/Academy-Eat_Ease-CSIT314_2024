@@ -71,7 +71,7 @@ class Customer {
 
             return customers;
         } catch (dbError) {
-            console.log("Error When Getting DB Customer: " + dbError);
+            console.log("Error When Getting Customer From Database: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error; 
@@ -184,7 +184,7 @@ class Customer {
             const customerPaymentMethods = queryResult[0];
             return customerPaymentMethods;
         } catch (dbError) {
-            console.log("Error When Updating Customer Password: " + dbError);
+            console.log("Error When Retrieving Payment Methods: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -207,11 +207,11 @@ class Customer {
             return;
         } catch (dbError) {
             if (dbError.code !== undefined && dbError.code === 'ER_DUP_ENTRY') {
-                const error = new Error("Customer Already Exist");
+                const error = new Error("Payment Already Exist");
                 error.status = 409;
                 throw error; 
             } else {
-                console.log("Error While Inserting Customer: " + dbError);
+                console.log("Error While Adding Payment Method: " + dbError);
                 const error = new Error("Internal Server Error");
                 error.status = 500;
                 throw error; 
