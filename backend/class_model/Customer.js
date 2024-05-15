@@ -40,8 +40,7 @@ class Customer {
                 error.status = 409;
                 throw error; 
             } else {
-                console.log("Error While Inserting Customer!");
-                console.log(dbError);
+                console.log("Error While Inserting Customer: " + dbError);
                 const error = new Error("Internal Server Error");
                 error.status = 500;
                 throw error; 
@@ -207,10 +206,16 @@ class Customer {
             }
             return;
         } catch (dbError) {
-            console.log("Error When Adding Payment Method: " + dbError);
-            const error = new Error("Internal Server Error");
-            error.status = 500;
-            throw error; 
+            if (dbError.code !== undefined && dbError.code === 'ER_DUP_ENTRY') {
+                const error = new Error("Customer Already Exist");
+                error.status = 409;
+                throw error; 
+            } else {
+                console.log("Error While Inserting Customer: " + dbError);
+                const error = new Error("Internal Server Error");
+                error.status = 500;
+                throw error; 
+            }
         }
     }
 
