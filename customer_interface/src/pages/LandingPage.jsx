@@ -1,18 +1,30 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import landingImg from "../assets/Images/landingPage.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { IoLocationSharp } from "react-icons/io5";
 import { Button } from "@material-tailwind/react";
 // import { Input, Button } from "@material-tailwind/react";
+import { useAuth } from "../Context";
 
 const LandingPage = () => {
   const [address, setAddress] = useState("");
   const onChange = ({ target }) => setAddress(target.value);
   const navigate = useNavigate();
+  const { location, setLocation } = useAuth();
+
+  useEffect(() => {
+    if (location.displayAddress !== undefined) {
+      navigate('/home?kw=');
+    }
+  }, [location])
 
   const handleSearch = () => {
-    navigate(`/home?kw=&lat=-34.408909&lon=150.8854373&address= University of Wollongong, NSW, 2522, Australia. `);
+    setLocation({
+      displayAddress: 'University of Wollongong, NSW, 2522, Australia',
+      lat: -34.408909,
+      lon: 150.8854373
+    })
   };
 
   const handleSearchAddress = async (address) => {
@@ -33,7 +45,11 @@ const LandingPage = () => {
       console.log(response.data);
       console.log(displayAddress, lat, lon);
 
-      navigate(`/home?kw=&lat=${lat}&lon=${lon}&address=${displayAddress}`);
+      setLocation({
+        displayAddress: displayAddress,
+        lat: lat,
+        lon: lon
+      })
       return response.data;
     } catch (err) {
       throw err;

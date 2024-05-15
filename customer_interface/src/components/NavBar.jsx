@@ -7,8 +7,8 @@ import { Badge } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Context";
 import { useNavigate } from "react-router-dom";
-const NavBar = ({lat, lon}) => {
-  const { totalItems, searchCount, setSearchCount } = useAuth();
+const NavBar = () => {
+  const { totalItems, searchCount, setSearchCount, location, setLocation } = useAuth();
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
   const onChange = ({ target }) => setKeyword(target.value);
@@ -17,14 +17,19 @@ const NavBar = ({lat, lon}) => {
   //Function used to set the new keyword count which invoke home page reload
   const handleKWSearch = () => {
     setSearchCount(prevCount => prevCount+1);
-    navigate(`/home?kw=${keyword}&rlb=0&r=30&lat=${lat}&lon=${lon}`);
+    navigate(`/home?kw=${keyword}&rlb=0&r=30`);
+  }
+
+  const handleLandingNavigate = () => {
+    setLocation({})
+    navigate(`/page`);
   }
   
   return (
     <div className="grid grid-cols-10 bg-eatEase w-full">
       <div
         className="flex gap-5 items-center col-span-2 ml-10"
-        onClick={() => navigate("/page")}
+        onClick={() => handleLandingNavigate()}
       >
         <img
           className="w-[50px] h-[50px] rounded-3xl my-2 "

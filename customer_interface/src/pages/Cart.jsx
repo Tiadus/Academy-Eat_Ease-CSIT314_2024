@@ -6,7 +6,7 @@ import axios from 'axios';
 import {Button} from '@material-tailwind/react'
 import NavBar from '../components/NavBar';
 const Cart = () => {
-  const { isAuthenticated, totalItems, setTotalItems ,lat, lon} = useAuth();
+  const { isAuthenticated, totalItems, setTotalItems, location} = useAuth();
   const [cart, setCart] = useState({})
 
 
@@ -82,13 +82,13 @@ const Cart = () => {
     try {
       // const lat = '-34.408909';
       // const lon = '150.8854373';
-      console.log('lat: ' + lat + ' lon: ' + lon);
+      //console.log('lat: ' + lat + ' lon: ' + lon);
       console.log(isAuthenticated)
 
       const response = await axios.get(`http://localhost:4000/api/customer/cart/view`, {
         params: {
-          lat: lat,
-          lon: lon
+          lat: location.lat,
+          lon: location.lon
         },
 
         headers: {
