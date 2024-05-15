@@ -44,8 +44,7 @@ class Membership {
 
             return 200;
         } catch(dbError) {
-            console.log("Error When Renewing Customer Membership!");
-            console.log(dbError);
+            console.log("Error When Renewing Customer Membership: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -68,8 +67,7 @@ class Membership {
 
             return 200;
         } catch(dbError) {
-            console.log("Error When Canceling Customer Membership!");
-            console.log(dbError);
+            console.log("Error When Canceling Customer Membership: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;

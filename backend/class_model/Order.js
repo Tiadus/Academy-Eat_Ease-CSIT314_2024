@@ -50,8 +50,7 @@ class Order {
                 error.status = 409;
                 throw error; 
             } else {
-                console.log("Error While Inserting Order!");
-                console.log(dbError);
+                console.log("Error While Inserting Order: " + dbError);
                 const error = new Error("Internal Server Error");
                 error.status = 500;
                 throw error; 
@@ -83,8 +82,7 @@ class Order {
             const orders = queryResult[0];
             return orders;
         } catch (dbError) {
-            console.log("Error While Inserting Order!");
-            console.log(dbError);
+            console.log("Error While Getting Order From Database: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error; 
@@ -107,8 +105,7 @@ class Order {
             const orderItems = queryResult[0];
             return orderItems;
         } catch (dbError) {
-            console.log("Error While Getting Order Item!");
-            console.log(dbError);
+            console.log("Error While Getting Order Item: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error; 
@@ -143,8 +140,7 @@ class Order {
                 await connection.rollback();
             }
 
-            console.log("Error While Reviewing Order!");
-            console.log(dbError);
+            console.log("Error While Setting Order Review: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -172,8 +168,7 @@ class Order {
 
             return affectedRows;
         } catch(dbError) {
-            console.log("Error While Accepting Order!");
-            console.log(dbError);
+            console.log("Error While Accepting Order: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -197,8 +192,7 @@ class Order {
 
             return affectedRows;
         } catch(dbError) {
-            console.log("Error While Accepting Order!");
-            console.log(dbError);
+            console.log("Error While Rejecting Order: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -219,8 +213,7 @@ class Order {
             const affectedRows = deleteResult[0].affectedRows;
             return affectedRows;
         } catch (dbError) {
-            console.log("Error While Deleting Order!");
-            console.log(dbError);
+            console.log("Error While Deleting Order: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -239,8 +232,7 @@ class Order {
             return orders;
         }
         catch (dbError) {
-            console.log("Error While Getting Active Orders!");
-            console.log(dbError);
+            console.log("Error While Getting Incoming Orders: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error; 
@@ -269,8 +261,7 @@ class Order {
             return activeOrders;
         }
         catch (dbError) {
-            console.log("Error While Getting Active Orders!");
-            console.log(dbError);
+            console.log("Error While Getting Active Orders: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error; 
@@ -299,8 +290,7 @@ class Order {
             return pastOrders;
         }
         catch (dbError) {
-            console.log("Error While Getting Past Orders!");
-            console.log(dbError);
+            console.log("Error While Getting Past Orders: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error; 
@@ -318,8 +308,7 @@ class Order {
             const orders = queryResult[0];
             return orders;
         } catch (dbError) {
-            console.log("Error While Getting Past Orders!");
-            console.log(dbError);
+            console.log("Error While Getting Orders By Timeline: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error; 

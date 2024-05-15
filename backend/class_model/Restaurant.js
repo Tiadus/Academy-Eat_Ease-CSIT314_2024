@@ -58,8 +58,7 @@ class Restaurant {
                 error.status = 409;
                 throw error; 
             } else {
-                console.log("Error While Inserting Restaurant!");
-                console.log(dbError);
+                console.log("Error While Inserting Restaurant: " + dbError);
                 const error = new Error("Internal Server Error");
                 error.status = 500;
                 throw error;
@@ -88,8 +87,7 @@ class Restaurant {
             const restaurants = queryResult[0];
             return restaurants;
         } catch (dbError) {
-            console.log("Error While Getting Restaurant From Database By Name!");
-            console.log(dbError);
+            console.log("Error While Getting Restaurant From Database: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -105,8 +103,7 @@ class Restaurant {
             const restaurants = queryResult[0];
             return restaurants;
         } catch (dbError) {
-            console.log("Error While Getting Restaurant From Database By Name!");
-            console.log(dbError);
+            console.log("Error While Getting Restaurant From Database By Name: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -124,8 +121,7 @@ class Restaurant {
             const affectedRows = updateResult[0].affectedRows;
             return affectedRows;
         } catch (dbError) {
-            console.log("Error While Setting Restaurant Email!");
-            console.log(dbError);
+            console.log("Error While Setting Restaurant Email: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -143,8 +139,7 @@ class Restaurant {
             const affectedRows = updateResult[0].affectedRows;
             return affectedRows;
         } catch (dbError) {
-            console.log("Error While Setting Restaurant Email!");
-            console.log(dbError);
+            console.log("Error While Setting Restaurant Phone: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -162,8 +157,7 @@ class Restaurant {
             const affectedRows = updateResult[0].affectedRows;
             return affectedRows;
         } catch (dbError) {
-            console.log("Error While Setting Restaurant Email!");
-            console.log(dbError);
+            console.log("Error While Setting Restaurant Password: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -181,8 +175,7 @@ class Restaurant {
             const affectedRows = updateResult[0].affectedRows;
             return affectedRows;
         } catch (dbError) {
-            console.log("Error While Setting Restaurant Email!");
-            console.log(dbError);
+            console.log("Error While Setting Restaurant Name: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -200,8 +193,7 @@ class Restaurant {
             const affectedRows = updateResult[0].affectedRows;
             return affectedRows;
         } catch (dbError) {
-            console.log("Error While Setting Restaurant Email!");
-            console.log(dbError);
+            console.log("Error While Setting Restaurant Description: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -219,8 +211,7 @@ class Restaurant {
             const affectedRows = updateResult[0].affectedRows;
             return affectedRows;
         } catch (dbError) {
-            console.log("Error While Setting Restaurant Email!");
-            console.log(dbError);
+            console.log("Error While Setting Restaurant Address: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -238,8 +229,7 @@ class Restaurant {
             const affectedRows = updateResult[0].affectedRows;
             return affectedRows;
         } catch (dbError) {
-            console.log("Error While Setting Restaurant Email!");
-            console.log(dbError);
+            console.log("Error While Setting Restaurant ABN: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -257,8 +247,7 @@ class Restaurant {
             const affectedRows = updateResult[0].affectedRows;
             return affectedRows;
         } catch (dbError) {
-            console.log("Error While Setting Restaurant Email!");
-            console.log(dbError);
+            console.log("Error While Setting Restaurant Banking: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -280,8 +269,7 @@ class Restaurant {
                 error.status = 409;
                 throw error; 
             } else {
-                console.log("Error While Inserting Item!");
-                console.log(dbError);
+                console.log("Error While Inserting Restaurant Item: " + dbError);
                 const error = new Error("Internal Server Error");
                 error.status = 500;
                 throw error; 
@@ -300,17 +288,10 @@ class Restaurant {
             const affectedRow = deleteResult[0].affectedRows;
             return affectedRow;
         } catch (dbError) {
-            if (dbError.code !== undefined && dbError.code === 'ER_DUP_ENTRY') {
-                const error = new Error("Item Already Exist");
-                error.status = 409;
-                throw error; 
-            } else {
-                console.log("Error While Inserting Item!");
-                console.log(dbError);
-                const error = new Error("Internal Server Error");
-                error.status = 500;
-                throw error; 
-            }
+            console.log("Error While Deleting Item: " + dbError);
+            const error = new Error("Internal Server Error");
+            error.status = 500;
+            throw error; 
         }
     }
 
@@ -325,12 +306,11 @@ class Restaurant {
             return affectedRows;
         } catch (dbError) {
             if (dbError.code !== undefined && dbError.code === 'ER_DUP_ENTRY') {
-                const error = new Error("Item Already Exist");
+                const error = new Error("Item With Same Attribute Already Exist");
                 error.status = 409;
                 throw error; 
             } else {
-                console.log("Error While Editing Item!");
-                console.log(dbError);
+                console.log("Error While Editing Item: " + dbError);
                 const error = new Error("Internal Server Error");
                 error.status = 500;
                 throw error; 
@@ -347,8 +327,7 @@ class Restaurant {
             const restaurantItems = queryResult[0];
             return restaurantItems;
         } catch (dbError) {
-            console.log("Error While Getting Restaurant Items!");
-            console.log(dbError);
+            console.log("Error While Getting Restaurant Items: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -372,8 +351,7 @@ class Restaurant {
             const restaurants = queryResult[0];
             return restaurants;
         } catch (dbError) {
-            console.log("Error While Getting Restaurant By Keyword!");
-            console.log(dbError);
+            console.log("Error While Getting Restaurant By Keyword: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -401,8 +379,7 @@ class Restaurant {
             const restaurants = queryResult[0];
             return restaurants;
         } catch (dbError) {
-            console.log("Error While Getting Restaurants By Category!");
-            console.log(dbError);
+            console.log("Error While Getting Restaurants By Category: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -419,8 +396,7 @@ class Restaurant {
             const categories = queryResult[0];
             return categories;
         } catch (dbError) {
-            console.log("Error While Getting Categories!");
-            console.log(dbError);
+            console.log("Error While Getting Categories: " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
