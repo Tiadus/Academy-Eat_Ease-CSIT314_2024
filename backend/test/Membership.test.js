@@ -12,7 +12,7 @@ describe('Membership', () => {
                     rollback: jest.fn(),
                     commit: jest.fn()
                 }),
-                query: jest.fn().mockRejectedValue(new Error('Database error')),
+                query: jest.fn().mockRejectedValue(new Error('Correctly Thrown Error')),
                 end: jest.fn()
             }
         }));

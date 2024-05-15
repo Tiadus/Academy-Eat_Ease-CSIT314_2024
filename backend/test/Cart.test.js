@@ -8,13 +8,13 @@ jest.mock('../Database.js', () => ({
           commit: jest.fn(),
           beginTransaction: jest.fn()
       }),
-      query: jest.fn().mockRejectedValue(new Error('Database error')),
+      query: jest.fn().mockRejectedValue(new Error('Correctly Thrown Error')),
       end: jest.fn()
   }
 }));
 
 describe('Cart', () => {
-  const mockQuery = jest.fn().mockRejectedValue(new Error('Database error'));
+  const mockQuery = jest.fn().mockRejectedValue(new Error('Correctly Thrown Error'));
   require('../Database.js').pool.query = mockQuery;
 
   describe('insertCart', () => {

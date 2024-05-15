@@ -11,9 +11,10 @@ describe('Customer', () => {
                     release: jest.fn(),
                     rollback: jest.fn(),
                     commit: jest.fn(),
-                    beginTransaction: jest.fn()
+                    beginTransaction: jest.fn(),
+                    query: jest.fn().mockRejectedValue(new Error('Correctly Thrown Error'))
                 }),
-                query: jest.fn().mockRejectedValue(new Error('Database error')),
+                query: jest.fn().mockRejectedValue(new Error('Correctly Thrown Error')),
                 end: jest.fn()
             }
         }));
