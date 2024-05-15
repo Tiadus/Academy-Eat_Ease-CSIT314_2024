@@ -19,8 +19,7 @@ class Cart {
                 error.status = 409;
                 throw error; 
             } else {
-                console.log("Error When Inserting Cart");
-                console.log(dbError);
+                console.log("Error When Inserting Cart " + dbError);
                 const error = new Error("Internal Server Error");
                 error.status = 500;
                 throw error;
@@ -41,8 +40,7 @@ class Cart {
             const restaurants = queryResult[0];
             return restaurants;
         } catch (dbError) {
-            console.log("Error When Getting Cart Linked Restaurant");
-            console.log(dbError)
+            console.log("Error When Getting Cart Linked Restaurant " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error; 
@@ -105,8 +103,7 @@ class Cart {
                 error.status = 409;
                 throw error; 
             } else {
-                console.log("Error When Inserting Cart");
-                console.log(dbError);
+                console.log("Error When Adding Item To Cart " + dbError);
                 const error = new Error("Internal Server Error");
                 error.status = 500;
                 throw error;
@@ -134,8 +131,7 @@ class Cart {
             const affectedRows = updateResult[0].affectedRows;
             return affectedRows;
         } catch (dbError) {
-            console.log("Error When Modifying Cart Item");
-            console.log(dbError);
+            console.log("Error When Modifying Cart Item " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
@@ -153,8 +149,7 @@ class Cart {
 
             return affectedRows;
         } catch (dbError) {
-            console.log("Error While Deleting Cart");
-            console.log(dbError);
+            console.log("Error While Deleting Cart " + dbError);
             const error = new Error("Internal Server Error");
             error.status = 500;
             throw error;
