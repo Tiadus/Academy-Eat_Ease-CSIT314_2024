@@ -14,7 +14,7 @@ const Transactions = () => {
                 }
             })
 
-            console.log(response.data)
+            console.log("Past order: ", response.data)
             setOrders(response.data)
         }catch(e){
             throw new Error(e)
@@ -54,6 +54,7 @@ const Transactions = () => {
                         orderCode={order.orderCode}
                         orderCost={order.orderCost}
                         orderStatus={order.orderStatus}
+                        rejectReason={order.rejectReason}
                         handleDeleteOrder={handleDeleteOrder}/>
             
         ))}            

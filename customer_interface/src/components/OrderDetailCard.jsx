@@ -4,7 +4,7 @@ import { useAuth } from "../Context";
 import axios from "axios";
 import ReviewOrder from "./ReviewOrder";
 
-export function OrderDetailCard({ orderCode, orderStatus }) {
+export function OrderDetailCard({ orderCode, orderStatus, rejectReason }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen((cur) => !cur);
 
@@ -57,6 +57,17 @@ export function OrderDetailCard({ orderCode, orderStatus }) {
                 </p>
               </>
             )}
+            {rejectReason && (
+              <>
+                <hr />
+                <p className="text-2xl font-semibold ">Reject reason</p>
+                {Object.keys(orderDetail).length > 0 && (
+                  <>
+                    <p className="">Reason: {rejectReason}</p>
+                  </>
+                )}
+              </>
+            )}
             <hr />
             <p className="text-2xl font-semibold ">Customer information</p>
             {Object.keys(orderDetail).length > 0 && (
@@ -94,9 +105,7 @@ export function OrderDetailCard({ orderCode, orderStatus }) {
             <hr />
             {Object.keys(orderDetail).length > 0 && (
               <div className=" grid grid-cols-6">
-                <p className="font-bold col-span-3 ">
-                  Total cost: 
-                </p>
+                <p className="font-bold col-span-3 ">Total cost:</p>
                 <p className="font-bold col-start-5 col-span-2 text-center">
                   ${orderDetail.orderInformation.orderCost}
                 </p>
