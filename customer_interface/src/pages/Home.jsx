@@ -16,20 +16,16 @@ const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCat, setSelectedCat] = useState('');
-  // const location = useLocation(); // Initialize useLocation hook
-  const searchParams = new URLSearchParams(location.search); // Get search parameters from URL
-  const { isAuthenticated, searchCount,setLat, setLon, lat, lon, setLocation } = useAuth();
+   const urllocation = useLocation(); // Initialize useLocation hook
+  const searchParams = new URLSearchParams(urllocation.search); // Get search parameters from URL
+  const {searchCount, location } = useAuth();
 
   // Extract parameters from URL
   const kw = searchParams.get('kw');
   // const rlb = searchParams.get('rlb');
   // const lat = searchParams.get('lat');
   // const lon = searchParams.get('lon');
-  setLat(searchParams.get('lat'));
-  setLon(searchParams.get('lon'));
 
-  const address = searchParams.get('address');
-  setLocation(address);
   //Use Effect listen to the searchCount to invoke getting restaurant again
   useEffect(() => {
     handleSearch()
@@ -42,14 +38,13 @@ const Home = () => {
           kw: kw,
           rlb: rlb,
           r: r,
-          lat: lat,
-          lon: lon
+          lat: location.lat,
+          lon: location.lon
         }
 
       });
       setRestaurants(response.data);
-      console.log('kw: ', kw, ' rlb: ', rlb,'r:',r, ' lat: ',lat
-                  , 'lon: ', lon)
+      //console.log('kw: ', kw, ' rlb: ', rlb,'r:',r, ' lat: ',lat , 'lon: ', lon)
       console.log(response.data);
     } catch (error) {
       console.error('Error fetching restaurants:', error);
@@ -98,13 +93,13 @@ const Home = () => {
   useEffect(() => {
     fetchCategory()
     console.log(selectedCat)
-    selectedCat===''?handleSearch() : handleFilterCategory(selectedCat ,lat, lon);
+    selectedCat===''?handleSearch() : handleFilterCategory(selectedCat , location.lat, location.lon);
      
 
   }, [selectedCat])
   return (
     <div className='flex flex-col items-center w-full'>
-      <NavBar lat = {lat} lon = {lon}/>
+      <NavBar/>
       {/* SLIDER or Banner here */}
       <div className='text-3xl my-5'>Category</div>
       <div className='grid grid-cols-5 '>
@@ -122,7 +117,7 @@ const Home = () => {
 
       {/* Current address */}
       <div className='flex bg-gray-400 w-[500px] h-[100px] rounded-lg  items-center justify-center mb-10' >
-        {address}
+        {location.displayAddress}
         <LuMapPin className='h-[25px] w-[25px]' />
 
       </div>

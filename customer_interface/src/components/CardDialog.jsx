@@ -41,7 +41,7 @@ export function CartDialog({totalCost}) {
             const response = await axios.post('http://localhost:4000/api/customer/order/create',{
                 recipientName :name,
                 recipientPhone : phone, 
-                orderLocation :location, 
+                orderLocation :location.displayAddress, 
                 orderCost: totalCost
             },{
                 headers: {
