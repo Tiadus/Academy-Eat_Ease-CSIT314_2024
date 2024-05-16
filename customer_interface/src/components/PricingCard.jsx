@@ -10,6 +10,7 @@ import { useAuth } from "../Context";
 import axios from 'axios'
 import { useState } from "react";
 import Membership from "./Membership";
+import { MemberCardDialog } from "./MemberCardDialog";
 function CheckIcon() {
     return (
         <svg
@@ -197,16 +198,18 @@ export function PricingCard({ price, type, memberType, membershipEnd, setMembers
                 </>
                     :
                     
-                    <Button
-                    size="lg"
-                    color="white"
-                    className="hover:scale-[1.02] focus:scale-[1.02] active:scale-100"
-                    ripple={false}
-                    fullWidth={true}
-                    onClick={()=>handleSubscribe(type)}
-                >
-                    Subscribe Now 
-                </Button>}
+                //     <Button
+                //     size="lg"
+                //     color="white"
+                //     className="hover:scale-[1.02] focus:scale-[1.02] active:scale-100"
+                //     ripple={false}
+                //     fullWidth={true}
+                //     onClick={()=>handleSubscribe(type)}
+                // >
+                //     Subscribe Now 
+                // </Button>
+                <MemberCardDialog handleSubscribe={handleSubscribe} type={type}/>
+}
             </CardFooter>
         </Card>
     );
