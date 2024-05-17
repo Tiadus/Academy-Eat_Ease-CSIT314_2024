@@ -1224,19 +1224,19 @@ app.post('/api/owner/edit/item', async (req,res) => {
     const restaurantEmail = authenParts[0];
     const restaurantPassword = authenParts[1];
 
-    const newItemName = req.body.newItemName;
+    //const newItemName = req.body.newItemName;
     const oldItemName = req.body.oldItemName;
     const itemDes = req.body.itemDes;
     const itemPrice = req.body.itemPrice;
 
-    if (newItemName === undefined || itemPrice === undefined || isNaN(itemPrice) === true || itemDes === undefined || oldItemName === undefined) {
+    if (itemPrice === undefined || isNaN(itemPrice) === true || itemDes === undefined || oldItemName === undefined) {
         return res.send("Wrong Parameter");
     }
     
     try {
         const serviceRestaurant = new ServiceRestaurant();
         await serviceRestaurant.authenticateOwner(restaurantEmail, restaurantPassword);
-        await serviceRestaurant.editRestaurantItem(newItemName, itemDes, parseFloat(itemPrice), oldItemName);
+        await serviceRestaurant.editRestaurantItem(itemDes, parseFloat(itemPrice), oldItemName);
 
         res.status(200).send({ message: 'Item Successfully Edited' });
     } catch (error) {

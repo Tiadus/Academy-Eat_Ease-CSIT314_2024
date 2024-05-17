@@ -130,9 +130,9 @@ class ServiceRestaurant {
         }
     }
 
-    async editRestaurantItem(newItemName, itemDes, itemPrice, oldItemName) {
+    async editRestaurantItem(itemDes, itemPrice, oldItemName) {
         try {
-            const affectedRows = await this.aRestaurant.editItem(newItemName, itemDes, itemPrice, oldItemName);
+            const affectedRows = await this.aRestaurant.editItem(itemDes, itemPrice, oldItemName);
             if (affectedRows === 0) {
                 return Promise.reject(Object.assign(new Error("Forbidden"), { status: 403 }));
             }

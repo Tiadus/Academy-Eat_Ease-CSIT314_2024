@@ -295,11 +295,11 @@ class Restaurant {
         }
     }
 
-    async editItem(newItemName, itemDescription, itemPrice, oldItemName) {
+    async editItem(itemDescription, itemPrice, oldItemName) {
         const {pool} = require('../Database.js');
         try {
-            const sql = 'UPDATE RESTAURANT_ITEM SET itemName = ?, itemDescription = ?, itemPrice = ? WHERE restaurantCode = ? AND itemName = ?';
-            const sqlValue = [newItemName, itemDescription, itemPrice, this.restaurantCode, oldItemName,];
+            const sql = 'UPDATE RESTAURANT_ITEM SET itemDescription = ?, itemPrice = ? WHERE restaurantCode = ? AND itemName = ?';
+            const sqlValue = [itemDescription, itemPrice, this.restaurantCode, oldItemName];
             const updateResult = await pool.query(sql, sqlValue);
             const affectedRows = updateResult[0].affectedRows;
 

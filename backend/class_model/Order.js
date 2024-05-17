@@ -92,13 +92,11 @@ class Order {
     async getOrderItems() {
         const {pool} = require('../Database.js');
         try {
-            let sql1 = 'SELECT RESTAURANT_ITEM.restaurantCode, RESTAURANT_ITEM.itemName, ORDER_ITEM.itemPrice, ORDER_ITEM.itemQuantity, ROUND((ORDER_ITEM.itemPrice * ORDER_ITEM.itemQuantity),2) AS totalUnitPrice, RESTAURANT_ITEM.itemIMG';
+            let sql1 = 'SELECT itemName, itemPrice, itemQuantity, ROUND((itemPrice * itemQuantity),2) AS totalUnitPrice';
             let sql2 = 'FROM ORDER_ITEM';
-            let sql3 = 'JOIN APP_ORDER ON ORDER_ITEM.orderCode = APP_ORDER.orderCode';
-            let sql4 = 'JOIN RESTAURANT_ITEM ON APP_ORDER.restaurantCode = RESTAURANT_ITEM.restaurantCode AND ORDER_ITEM.itemName = RESTAURANT_ITEM.itemName';
-            let sql5 = 'WHERE ORDER_ITEM.orderCode = ?';
+            let sql3 = 'WHERE ORDER_ITEM.orderCode = ?';
 
-            const sql = `${sql1} ${sql2} ${sql3} ${sql4} ${sql5}`;
+            const sql = `${sql1} ${sql2} ${sql3}`;
             const sqlValue = [this.orderCode];
 
             const queryResult = await pool.query(sql, sqlValue);
