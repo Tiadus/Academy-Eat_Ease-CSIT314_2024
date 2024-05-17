@@ -15,10 +15,9 @@ export default function MenuCard({resCode, name, desc, price, img, refresh}) {
 
   const {isAuthenticated} = useAuthOwner(); 
 
-  const handleEditItem = async (newItemName, itemDes, itemPrice, oldItemName)=> {
+  const handleEditItem = async (itemDes, itemPrice, oldItemName)=> {
     try {
       const response = await axios.post(`${BACKEND_URL}/api/owner/edit/item`,{
-        newItemName, 
         itemDes,
         itemPrice, 
         oldItemName
@@ -71,7 +70,7 @@ export default function MenuCard({resCode, name, desc, price, img, refresh}) {
       </CardContent>
       <CardActions>
         {/* <Button size="small">Edit</Button> */}
-        <EditDialog oldName={name} handleEditItem={handleEditItem}/>
+        <EditDialog oldName={name} desc={desc} price={price} handleEditItem={handleEditItem}/>
         <Button onClick={()=>handleDeleteItem(name)} size="small">Delete</Button>
       </CardActions>
     </Card>

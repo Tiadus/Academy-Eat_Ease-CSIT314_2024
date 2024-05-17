@@ -10,7 +10,7 @@ import {
   } from "@mui/material";
   import { React, useState } from "react";
   
-  const EditDialog = ({handleEditItem, oldName}) => {
+  const EditDialog = ({handleEditItem, oldName, desc, price}) => {
     const [open, setOpen] = useState(false);
     const handleClickOpen = () => {
       setOpen(true);
@@ -37,23 +37,13 @@ import {
               event.preventDefault();
               const formData = new FormData(event.currentTarget);
               const formJson = Object.fromEntries(formData.entries());
-              handleEditItem(formJson.name, formJson.desc, formJson.price, oldName)
+              handleEditItem(formJson.desc, formJson.price, oldName)
               handleClose();
             },
           }}
         >
           <DialogTitle>Edit item</DialogTitle>
           <DialogContent>
-            <Typography>Item name</Typography>
-            <TextField
-              autoFocus
-              margin="dense"
-              name="name"
-              label="Name"
-              fullWidth
-              variant="outlined"
-              // onChange={(e)=>setName(e.target.value)}
-            />
             <Typography>Description</Typography>
             <TextField
               autoFocus
@@ -63,6 +53,7 @@ import {
               rows={4}
               fullWidth
               multiline
+              defaultValue={desc}
               // variant="outlined"
               // onChange={(e)=>setDescription(e.target.value)}
             />
@@ -74,6 +65,7 @@ import {
               name="price"
               fullWidth
               variant="outlined"
+              defaultValue={price}
               // onChange={(e)=>setPrice(e.target.value)}
             />
           </DialogContent>
