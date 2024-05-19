@@ -47,8 +47,7 @@ CREATE TABLE IF NOT EXISTS RESTAURANT (
     restaurantIMG varchar(255) not null,
     isActive bool not null,
     constraint RESTAURANT_PK primary key (restaurantCode),
-    constraint RESTAURANT_CK1 unique (restaurantEmail),
-    constraint RESTAURANT_CK2 unique (restaurantName)
+    constraint RESTAURANT_CK1 unique (restaurantEmail)
 );
 CREATE TABLE IF NOT EXISTS RESTAURANT_AUTHENTICATION (
 	restaurantEmail varchar(225) not null,
