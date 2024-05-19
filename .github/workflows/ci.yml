@@ -22,6 +22,14 @@ jobs:
 
     - name: Install dependencies
       run: |
+        cd customer_interface
+        npm install
+        cd ../
+
+        cd restaurant_interface
+        npm install
+        cd ../
+        
         cd backend
         npm install
 
