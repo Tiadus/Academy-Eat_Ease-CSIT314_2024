@@ -144,7 +144,7 @@ export default function OrdersTable({incomingCount}) {
                 <TableCell>Date</TableCell>
                 <TableCell>Name</TableCell>
                 <TableCell>Ship To</TableCell>
-                <TableCell>Order Code </TableCell>
+                <TableCell>Phone </TableCell>
                 <TableCell>Sale Amount</TableCell>
                 <TableCell align="center">Actions</TableCell>
               </TableRow>
@@ -155,7 +155,7 @@ export default function OrdersTable({incomingCount}) {
                   <TableCell>{order.orderDate}</TableCell>
                   <TableCell>{order.recipientName}</TableCell>
                   <TableCell>{order.orderLocation}</TableCell>
-                  <TableCell>{order.orderCode}</TableCell>
+                  <TableCell>{order.recipientPhone}</TableCell>
                   <TableCell>{`$${order.orderCost}`}</TableCell>
                   <TableCell align="center">
                     {/* <Button onClick={() => handleApproveOrder(order.orderCode)}>
@@ -195,7 +195,7 @@ export default function OrdersTable({incomingCount}) {
                 <TableCell>Date</TableCell>
                 <TableCell>Name</TableCell>
                 <TableCell>Ship To</TableCell>
-                <TableCell>Order Code </TableCell>
+                <TableCell>Phone </TableCell>
                 <TableCell>Sale Amount</TableCell>
                 <TableCell align="center">Actions</TableCell>
               </TableRow>
@@ -206,7 +206,7 @@ export default function OrdersTable({incomingCount}) {
                   <TableCell>{order.orderDate}</TableCell>
                   <TableCell>{order.recipientName}</TableCell>
                   <TableCell>{order.orderLocation}</TableCell>
-                  <TableCell>{order.orderCode}</TableCell>
+                  <TableCell>{order.recipientPhone}</TableCell>
                   <TableCell>{`$${order.orderCost}`}</TableCell>
                   <TableCell align="center">
                     <Button onClick={() => handleApproveOrder(order.orderCode)}>
