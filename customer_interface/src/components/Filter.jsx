@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { Radio, Button } from "@material-tailwind/react";
 
-const Filter = ({selectedCat, handleFilterCategory, handleSearch }) => {
+const Filter = ({selectedCat, location, handleFilterCategory, handleSearch }) => {
   const [ratings, setRatings] = useState(1);
   const [distances, setDistances] = useState(10);
   const [clear, setClear] = useState(false);
@@ -11,7 +11,7 @@ const Filter = ({selectedCat, handleFilterCategory, handleSearch }) => {
   const handleFilter = () => {
     // Call the parent component's filter function with the selected ratings and distances
     // onFilter({ ratings, distances });
-    selectedCat? handleFilterCategory(selectedCat,ratings,distances):
+    selectedCat? handleFilterCategory(selectedCat, location.lat, location.lon, ratings,distances):
     handleSearch(ratings, distances);
   };
 
@@ -20,6 +20,7 @@ const Filter = ({selectedCat, handleFilterCategory, handleSearch }) => {
     setDistances(null); 
     const newClear = clearCount + 1;
     setClearCount(newClear);
+    selectedCat? handleFilterCategory(selectedCat, location.lat, location.lon, undefined,undefined):
     handleSearch(undefined, undefined);
   }
   //   const handleRatingChange = (e) => {

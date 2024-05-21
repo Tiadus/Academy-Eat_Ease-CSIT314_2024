@@ -63,12 +63,12 @@ const Home = () => {
   }
 
   // Handle filter category
-  const handleFilterCategory = async (selectedCat,lat,lon) => {
+  const handleFilterCategory = async (selectedCat,lat,lon,rating,distance) => {
     try {
       const response = await axios.get('http://localhost:4000/api/restaurants/' + selectedCat, {
         params: {
-          rlb: undefined,
-          r: undefined,
+          rlb: rating,
+          r: distance,
           lat: lat,
           lon: lon
         }
@@ -93,7 +93,7 @@ const Home = () => {
   useEffect(() => {
     fetchCategory()
     console.log(selectedCat)
-    selectedCat===''?handleSearch() : handleFilterCategory(selectedCat , location.lat, location.lon);
+    selectedCat===''?handleSearch() : handleFilterCategory(selectedCat , location.lat, location.lon, undefined, undefined);
      
 
   }, [selectedCat])
@@ -125,7 +125,7 @@ const Home = () => {
       <div className='grid grid-cols-10 w-3/4 w-full'>
         {/* Filter */}
         <div className='col-span-3 ml-[160px]'>
-          <Filter selectedCat={selectedCat} handleFilterCategory={handleFilterCategory} handleSearch={handleSearch}/>
+          <Filter selectedCat={selectedCat} location={location} handleFilterCategory={handleFilterCategory} handleSearch={handleSearch}/>
         </div>
         {/* Restaurant list */}
         <div className='flex flex-col col-span-5 gap-5'>
