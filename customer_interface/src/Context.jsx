@@ -5,7 +5,7 @@ const Context = createContext();
 export const useAuth = () => useContext(Context);
 
 export const ContextProvider = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    /*const [isAuthenticated, setIsAuthenticated] = useState(() => {
         const storedAuthState = localStorage.getItem('isAuthenticated');
         return storedAuthState ? JSON.parse(storedAuthState) : false;
     });
@@ -13,7 +13,9 @@ export const ContextProvider = ({ children }) => {
       // Save isAuthenticated state to local storage whenever it changes
     useEffect(() => {
         localStorage.setItem('isAuthenticated', JSON.stringify(isAuthenticated));
-      }, [isAuthenticated]);
+      }, [isAuthenticated]);*/
+
+    const [isAuthenticated, setIsAuthenticated] = useState(null);
 
     const [searchCount, setSearchCount] = useState(0); //State to keep track of how many time the user click the search button. Used to invoke Home page reload
 
