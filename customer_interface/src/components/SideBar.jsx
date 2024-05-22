@@ -8,15 +8,25 @@ import {
     Chip,
   } from "@material-tailwind/react";
   
-  import { BiSolidUserDetail } from "react-icons/bi";
+  import { BiSolidEditLocation, BiSolidUserDetail } from "react-icons/bi";
   import { IoReceipt } from "react-icons/io5";
   import { FaUsers } from "react-icons/fa";
   import { FaCreditCard } from "react-icons/fa6";
   import { IoDocumentTextSharp } from "react-icons/io5";
   import { LuLogOut } from "react-icons/lu";
   import {useNavigate} from "react-router-dom"
+  import React from "react";
+  import { useAuth } from '../Context';
    
   export function Sidebar({onOptionClick}) {
+    const { location, setLocation} = useAuth();
+
+    React.useEffect(() => {
+      if (location.displayAddress === undefined) {
+        navigate("/");
+      }
+    }, [location])
+
     const navigate = useNavigate();
     return (
       <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
@@ -59,7 +69,11 @@ import {
             </ListItemPrefix>
             Transactions
           </ListItem>
-          <ListItem onClick={()=> navigate("/")}>
+          <ListItem onClick={
+            ()=> {
+              setLocation({})
+            }
+            }>
             <ListItemPrefix>
             <LuLogOut className="h-5 w-5"/>
             </ListItemPrefix>
