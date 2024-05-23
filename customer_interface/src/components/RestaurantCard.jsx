@@ -12,9 +12,9 @@ const RestaurantCard = ({name, code, desc, rating, restaurantCode, location, img
     const restaurantIMG = 'http://localhost:4000/' + img;
     // console.log(restaurantIMG);
     return (
-        <div onClick={handleOnClick} className='grid grid-cols-5  items-center bg-gray-300 rounded-lg'>
-            <img className='w-[150px] h-[150px] col-start-1 col-span-1' src={restaurantIMG} alt="" />
-            <div className='col-start-2 col-span-2 '>
+        <div onClick={handleOnClick} className='grid grid-cols-5  items-center bg-gray-300 rounded-lg p-5'>
+            <img className='w-[150px] h-[150px] col-start-1 col-span-1 rounded-lg' src={restaurantIMG} alt="" />
+            <div className='col-start-2 col-span-2 ml-5 '>
                 <p className='text-2xl font-semibold '>{name}</p>
                 <p >Description: {desc}</p>
                 <p>Location: {location}</p>

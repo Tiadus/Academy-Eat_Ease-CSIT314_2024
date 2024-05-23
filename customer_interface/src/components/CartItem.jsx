@@ -5,7 +5,7 @@ const Item = ({name, price, quantity, image, restaurantCode, handleAdd, handleDe
   return (
     <div className='grid grid-col-3 mb-5 ml-[50px] mr-[50px] rounded-lg  shadow-xl'>
       <div className=' grid grid-col-3 justify-center items-center'>
-        <img className='w-[150px] h-[150px] col-start-1 col-span-1' src={`http://localhost:4000/${image}`} alt="" />
+        <img className='w-[150px] h-[150px] col-start-1 col-span-1 rounded-lg m-5' src={`http://localhost:4000/${image}`} alt="" />
         <div className='col-start-2 col-span-2'>
           <p className='text-2xl font-semibold'>{name}</p>
           

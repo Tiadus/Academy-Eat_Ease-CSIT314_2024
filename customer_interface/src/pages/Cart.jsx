@@ -82,7 +82,8 @@ const Cart = () => {
     try {
       // const lat = '-34.408909';
       // const lon = '150.8854373';
-      //console.log('lat: ' + lat + ' lon: ' + lon);
+      console.log(location)
+      console.log('lat: ' + location.lat + ' lon: ' + location.lon);
       console.log(isAuthenticated)
 
       const response = await axios.get(`http://localhost:4000/api/customer/cart/view`, {
@@ -104,6 +105,7 @@ const Cart = () => {
   useEffect(() => {
     fetchData()
   }, [totalItems])
+  
   return (
     <>
     <NavBar/>

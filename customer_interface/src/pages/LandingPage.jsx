@@ -57,24 +57,24 @@ const LandingPage = () => {
   };
   return (
     <div className="flex flex-col items-center">
-      <img src={landingImg} className="w-full h-[650px]"></img>
-      <div className=" grid grid-cols-10  w-1/2 h-[100px]  border-2 items-center">
+      <img src={landingImg} className="w-full h-[500px] mb-10"></img>
+      <div className=" grid grid-cols-10  w-1/2 h-[120px]  border-2 items-center rounded-lg">
         <input
           value={address}
           placeholder="    Enter your address"
           onChange={onChange}
-          className=" col-span-7 ml-[40px] mr-[20px] border-2 rounded py-2"
+          className=" col-span-7 ml-[40px] mr-[20px] border-2 rounded py-2 mt-5"
         />
         <Button
           //   onClick={handleSearch}
-          className="col-span-2 rounded  px-5 py-2 ml-[40px]"
+          className="col-span-2 rounded  px-5 py-2 ml-[40px] mt-5"
           onClick={() => {
             handleSearchAddress(address);
           }}
         >
           Search
         </Button>
-        <div className="flex mx-[40px]  col-span-7 text-gray-600 text-sm">
+        <div className="flex mx-[40px]  col-span-7 text-gray-600 text-sm ">
           <IoLocationSharp className="text-xl mr-2 " />
           <p>Or use </p>
           <p className="hover:underline px-1" onClick={handleSearch}>

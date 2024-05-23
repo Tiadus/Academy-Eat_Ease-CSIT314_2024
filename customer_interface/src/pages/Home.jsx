@@ -116,7 +116,7 @@ const Home = () => {
       </div>
 
       {/* Current address */}
-      <div className='flex bg-gray-400 w-[500px] h-[100px] rounded-lg  items-center justify-center mb-10' >
+      <div className='flex bg-gray-400 w-[500px] h-[100px] rounded-lg  items-center justify-center mb-10 p-10' >
         {location.displayAddress}
         <LuMapPin className='h-[25px] w-[25px]' />
 
